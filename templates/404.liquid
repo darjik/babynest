@@ -1,0 +1,166 @@
+{% comment %}
+  404 Error Page Template - BabyNest Kids Apparel Store
+  Displayed when a page or product is not found
+  User-friendly with helpful navigation and CTAs
+  Production-ready with custom messaging
+{% endcomment %}
+
+<div class="error-page error-page--404">
+  <div class="container">
+    <div class="error-content">
+      <div class="error-icon">
+        <svg viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="100" cy="100" r="95"></circle>
+          <text x="50" y="130" font-size="80" font-weight="bold">404</text>
+        </svg>
+      </div>
+
+      <h1 class="error-title">Page Not Found</h1>
+      <p class="error-description">
+        We couldn't find the page you're looking for. It might have been moved, deleted, or the URL might be incorrect.
+      </p>
+
+      <div class="error-actions">
+        <a href="/" class="button button--primary button--lg">Back to Home</a>
+        <a href="/collections/all" class="button button--outline button--lg">Shop Products</a>
+      </div>
+
+      <div class="error-suggestions">
+        <h2>Helpful Links</h2>
+        <ul>
+          <li><a href="/collections">Browse Collections</a></li>
+          <li><a href="/pages/about">About Us</a></li>
+          <li><a href="/pages/contact">Contact Support</a></li>
+          <li><a href="/pages/shipping-returns">Shipping & Returns</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .error-page {
+    padding: var(--space-xxl) 0;
+    background-color: var(--color-background);
+    min-height: calc(100vh - 300px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .error-content {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: var(--space-lg);
+  }
+
+  .error-icon {
+    margin-bottom: var(--space-xl);
+  }
+
+  .error-icon svg {
+    width: 150px;
+    height: 150px;
+    color: var(--color-primary);
+    opacity: 0.3;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  .error-title {
+    font-size: var(--font-size-h1);
+    margin-bottom: var(--space-md);
+  }
+
+  .error-description {
+    font-size: var(--font-size-body-lg);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-xl);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .error-actions {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+    margin-bottom: var(--space-xxl);
+    flex-wrap: wrap;
+  }
+
+  .error-suggestions {
+    background-color: var(--color-background-secondary);
+    border-radius: var(--radius-soft);
+    padding: var(--space-lg);
+    text-align: left;
+  }
+
+  .error-suggestions h2 {
+    font-size: var(--font-size-h3);
+    margin-bottom: var(--space-md);
+    text-align: center;
+  }
+
+  .error-suggestions ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .error-suggestions li {
+    margin-bottom: var(--space-sm);
+  }
+
+  .error-suggestions li:last-child {
+    margin-bottom: 0;
+  }
+
+  .error-suggestions a {
+    color: var(--color-primary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    transition: all var(--transition-base) var(--transition-timing);
+  }
+
+  .error-suggestions a::after {
+    content: '→';
+  }
+
+  .error-suggestions a:hover {
+    gap: var(--space-md);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .error-page {
+      min-height: calc(100vh - 200px);
+    }
+
+    .error-icon svg {
+      width: 120px;
+      height: 120px;
+    }
+
+    .error-title {
+      font-size: var(--font-size-h2);
+    }
+
+    .error-actions {
+      flex-direction: column;
+    }
+
+    .error-actions .button {
+      width: 100%;
+    }
+  }
+</style>
