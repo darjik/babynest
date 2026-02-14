@@ -1,0 +1,632 @@
+{% comment %}
+  Mobile Responsive Enhancement - BabyNest Kids Apparel Store
+  This snippet provides mobile-first refinements for all breakpoints
+  Includes touch-friendly interactions, swipe gestures, and mobile optimizations
+{% endcomment %}
+
+<style>
+  /* ============================================
+     MOBILE FIRST - BASE STYLES (Mobile 320px+)
+     ============================================ */
+  
+  body {
+    touch-action: manipulation;
+  }
+
+  /* Touch-friendly button targets (minimum 44x44px) */
+  button, 
+  a, 
+  input[type="button"], 
+  input[type="submit"],
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+    padding: var(--space-sm);
+  }
+
+  /* Optimize for touch - disable double-tap zoom on buttons */
+  input, 
+  button, 
+  a {
+    -webkit-touch-callout: none;
+  }
+
+  /* Prevent zoom on input focus on iOS */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  textarea {
+    font-size: 16px;
+  }
+
+  /* Mobile-specific typography adjustments */
+  h1 {
+    font-size: var(--font-size-h2);
+    line-height: 1.2;
+    margin-bottom: var(--space-md);
+  }
+
+  h2 {
+    font-size: var(--font-size-h3);
+    margin-bottom: var(--space-md);
+  }
+
+  h3 {
+    font-size: var(--font-size-h4);
+    margin-bottom: var(--space-sm);
+  }
+
+  p {
+    margin-bottom: var(--space-md);
+    line-height: var(--line-height-relaxed);
+  }
+
+  /* Mobile safe area support for notched devices */
+  @supports (padding: max(0px)) {
+    body {
+      padding-left: max(var(--space-sm), env(safe-area-inset-left));
+      padding-right: max(var(--space-sm), env(safe-area-inset-right));
+    }
+
+    .header {
+      padding-left: max(var(--space-md), env(safe-area-inset-left));
+      padding-right: max(var(--space-md), env(safe-area-inset-right));
+    }
+
+    .footer {
+      padding-left: max(var(--space-md), env(safe-area-inset-left));
+      padding-right: max(var(--space-md), env(safe-area-inset-right));
+    }
+  }
+
+  /* Improved mobile menu overlay */
+  [data-mobile-menu] {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--color-background);
+    transition: left var(--transition-base) var(--transition-timing);
+    z-index: var(--z-dropdown);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  [data-mobile-menu][aria-hidden="false"] {
+    left: 0;
+  }
+
+  /* Mobile search input optimization */
+  .header-search {
+    width: 100%;
+    max-width: none;
+  }
+
+  .header-search__input {
+    width: 100%;
+  }
+
+  /* Mobile category grid optimization */
+  .featured-categories__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  /* Mobile product grid - single column */
+  .products-grid__list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+  }
+
+  .product-card {
+    border-radius: var(--radius-soft);
+  }
+
+  /* Optimize product card for mobile */
+  .product-card__name {
+    font-size: var(--font-size-body-md);
+    line-height: 1.3;
+  }
+
+  .product-card__price {
+    font-size: var(--font-size-body-md);
+  }
+
+  /* Mobile hero banner text adjustment */
+  .hero-banner__content {
+    padding: var(--space-lg);
+  }
+
+  .hero-banner__title {
+    font-size: var(--font-size-h2);
+  }
+
+  .hero-banner__description {
+    font-size: var(--font-size-body-sm);
+  }
+
+  /* Mobile form optimization */
+  .form-group {
+    margin-bottom: var(--space-md);
+  }
+
+  input[type="email"],
+  input[type="text"],
+  textarea,
+  select {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    font-size: 16px;
+  }
+
+  /* Mobile newsletter input */
+  .newsletter-form {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .newsletter-form__input,
+  .newsletter-form__button {
+    width: 100%;
+  }
+
+  /* Cart drawer mobile optimization */
+  .cart-drawer {
+    max-width: 100%;
+  }
+
+  .cart-item__image {
+    width: 70px;
+    height: 70px;
+  }
+
+  /* Mobile accordion optimization */
+  .accordion-item {
+    margin-bottom: var(--space-md);
+  }
+
+  .accordion-trigger {
+    padding: var(--space-md);
+    font-size: var(--font-size-body-md);
+  }
+
+  /* Mobile filter drawer */
+  [data-filter-drawer] {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--color-background);
+    border-top: 2px solid var(--color-border);
+    border-top-left-radius: var(--radius-lg);
+    border-top-right-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    max-height: 80vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transform: translateY(100%);
+    transition: transform var(--transition-base) var(--transition-timing);
+    z-index: var(--z-modal);
+  }
+
+  [data-filter-drawer][aria-hidden="false"] {
+    transform: translateY(0);
+  }
+
+  /* Improve tap targets on mobile */
+  .product-option__buttons {
+    gap: var(--space-sm);
+  }
+
+  .product-size-btn {
+    min-width: 50px;
+    min-height: 50px;
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  /* Mobile breadcrumb */
+  .product-breadcrumb {
+    font-size: var(--font-size-body-xs);
+    margin-bottom: var(--space-md);
+  }
+
+  /* Mobile pagination */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+  }
+
+  .pagination__btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* ============================================
+     TABLET STYLES (480px and up)
+     ============================================ */
+  
+  @media (min-width: 480px) {
+    h1 {
+      font-size: var(--font-size-h1);
+    }
+
+    h2 {
+      font-size: var(--font-size-h2);
+    }
+
+    /* 2-column layout on larger mobile */
+    .products-grid__list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .featured-categories__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Wider search on larger mobile */
+    .header-search {
+      max-width: 300px;
+    }
+
+    /* Improve product card spacing */
+    .product-card__name {
+      font-size: var(--font-size-body-lg);
+    }
+
+    /* Newsletter form with input + button in row */
+    .newsletter-form {
+      flex-direction: row;
+      gap: var(--space-sm);
+    }
+
+    .newsletter-form__input {
+      flex: 1;
+    }
+
+    .newsletter-form__button {
+      flex: 0 0 auto;
+      width: auto;
+    }
+
+    /* Wider mobile menu */
+    [data-mobile-menu] {
+      width: 85%;
+    }
+  }
+
+  /* ============================================
+     SMALL TABLET STYLES (768px and up)
+     ============================================ */
+  
+  @media (min-width: 768px) {
+    .container {
+      padding: 0 var(--space-xl);
+    }
+
+    /* 3-column product grid */
+    .products-grid__list {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+    }
+
+    /* 3-column categories */
+    .featured-categories__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+    }
+
+    /* Wider search */
+    .header-search {
+      max-width: 400px;
+    }
+
+    /* Desktop-like header on tablet */
+    [data-hamburger-toggle] {
+      display: none;
+    }
+
+    [data-mobile-menu] {
+      position: static;
+      width: auto;
+      height: auto;
+      left: auto;
+      background-color: transparent;
+      flex: 1;
+    }
+
+    /* Product detail grid */
+    .product-wrapper {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+    }
+
+    .product-gallery__thumbnails {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* Filter sidebar instead of drawer */
+    [data-filter-drawer] {
+      position: static;
+      bottom: auto;
+      left: auto;
+      right: auto;
+      border-top: none;
+      border-left: 1px solid var(--color-border);
+      padding: 0;
+      max-height: none;
+      transform: translateY(0);
+      width: 250px;
+      flex-shrink: 0;
+    }
+
+    /* Cart drawer wider on tablet */
+    .cart-drawer {
+      max-width: 500px;
+    }
+
+    /* Trust section 4 columns */
+    .trust-section__grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-lg);
+    }
+
+    /* Social gallery 4 columns */
+    .social-gallery__grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-lg);
+    }
+
+    /* Footer 4 columns */
+    .footer__links {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-xl);
+    }
+
+    /* Breadcrumb visibility */
+    .product-breadcrumb {
+      display: flex;
+      margin-bottom: var(--space-lg);
+    }
+  }
+
+  /* ============================================
+     DESKTOP STYLES (1024px and up)
+     ============================================ */
+  
+  @media (min-width: 1024px) {
+    .container {
+      padding: 0 var(--space-xxl);
+    }
+
+    /* 4-column product grid */
+    .products-grid__list {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* Product detail - full 2-column */
+    .product-wrapper {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xxl);
+    }
+
+    /* Wider cart drawer */
+    .cart-drawer {
+      max-width: 450px;
+    }
+
+    /* Larger search bar */
+    .header-search {
+      max-width: 500px;
+    }
+
+    /* All hero banner text */
+    .hero-banner__title {
+      font-size: var(--font-size-h1);
+    }
+
+    .hero-banner__description {
+      font-size: var(--font-size-body-lg);
+    }
+
+    /* Related products grid */
+    .product-related__grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-lg);
+    }
+
+    /* Filter sidebar full width */
+    [data-filter-drawer] {
+      width: 280px;
+    }
+
+    /* Newsletter form layout */
+    .newsletter-form {
+      gap: var(--space-md);
+    }
+  }
+
+  /* ============================================
+     LANDSCAPE ORIENTATION ADJUSTMENTS
+     ============================================ */
+  
+  @media (max-height: 600px) and (orientation: landscape) {
+    .hero-banner__content {
+      padding: var(--space-md);
+    }
+
+    .hero-banner__title {
+      font-size: var(--font-size-h3);
+      margin-bottom: var(--space-sm);
+    }
+
+    .hero-banner__description {
+      display: none;
+    }
+
+    /* Reduce vertical spacing on landscape */
+    h1, h2, h3 {
+      margin-bottom: var(--space-sm);
+    }
+
+    .button {
+      padding: var(--space-xs) var(--space-sm);
+    }
+  }
+
+  /* ============================================
+     PRINT STYLES
+     ============================================ */
+  
+  @media print {
+    .header,
+    .footer,
+    .cart-drawer,
+    [data-hamburger-toggle],
+    .product-actions,
+    .newsletter-section {
+      display: none !important;
+    }
+
+    .product-page {
+      padding: 0;
+    }
+
+    .product-pricing {
+      font-weight: bold;
+    }
+
+    a {
+      text-decoration: underline;
+      color: #000;
+    }
+  }
+
+  /* ============================================
+     REDUCED MOTION SUPPORT
+     ============================================ */
+  
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  /* ============================================
+     DARK MODE SUPPORT (Future Ready)
+     ============================================ */
+  
+  @media (prefers-color-scheme: dark) {
+    /* Adjust colors for dark mode if needed */
+    /* Currently using light theme by design */
+  }
+
+  /* ============================================
+     HIGH CONTRAST MODE SUPPORT
+     ============================================ */
+  
+  @media (prefers-contrast: more) {
+    .button {
+      border-width: 2px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      border-width: 2px;
+    }
+  }
+</style>
+
+<script>
+  // Mobile Gesture Support
+  class MobileOptimizer {
+    constructor() {
+      this.init();
+    }
+
+    init() {
+      this.detectTouchSupport();
+      this.setupSwipeGestures();
+      this.optimizeViewport();
+    }
+
+    // Detect touch support
+    detectTouchSupport() {
+      const hasTouch = () => {
+        return (('ontouchstart' in window) ||
+                (navigator.maxTouchPoints > 0) ||
+                (navigator.msMaxTouchPoints > 0));
+      };
+
+      if (hasTouch()) {
+        document.documentElement.classList.add('touch-enabled');
+      }
+    }
+
+    // Setup swipe gestures for mobile carousel
+    setupSwipeGestures() {
+      const galleries = document.querySelectorAll('[data-gallery]');
+      
+      galleries.forEach(gallery => {
+        let startX = 0;
+        let startY = 0;
+
+        gallery.addEventListener('touchstart', (e) => {
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+        });
+
+        gallery.addEventListener('touchend', (e) => {
+          const endX = e.changedTouches[0].clientX;
+          const endY = e.changedTouches[0].clientY;
+          
+          const diffX = startX - endX;
+          const diffY = startY - endY;
+
+          if (Math.abs(diffX) > Math.abs(diffY)) {
+            if (diffX > 50) {
+              // Swiped left
+              gallery.dispatchEvent(new CustomEvent('swipe-left'));
+            } else if (diffX < -50) {
+              // Swiped right
+              gallery.dispatchEvent(new CustomEvent('swipe-right'));
+            }
+          }
+        });
+      });
+    }
+
+    // Optimize viewport for mobile
+    optimizeViewport() {
+      // Check if viewport meta exists
+      let viewport = document.querySelector('meta[name="viewport"]');
+      if (!viewport) {
+        viewport = document.createElement('meta');
+        viewport.name = 'viewport';
+        viewport.content = 'width=device-width, initial-scale=1.0, viewport-fit=cover';
+        document.head.appendChild(viewport);
+      }
+    }
+  }
+
+  // Initialize mobile optimizations
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      new MobileOptimizer();
+    });
+  } else {
+    new MobileOptimizer();
+  }
+</script>

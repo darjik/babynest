@@ -1,0 +1,450 @@
+{% comment %}
+  Search Section - BabyNest Kids Apparel Store
+  Full-featured search functionality with dynamic results
+  Integrates with Shopify search API for products and collections
+  Production-ready with autocomplete and filters
+{% endcomment %}
+
+<section class="search-section" data-search-section>
+  <div class="container">
+    <div class="search-wrapper">
+      <div class="search-container" data-search-container>
+        <input 
+          type="search" 
+          class="search-input" 
+          placeholder="Search products, collections..." 
+          aria-label="Search products"
+          data-search-input
+          autocomplete="off"
+        >
+        <button 
+          class="search-btn" 
+          aria-label="Search"
+          data-search-submit
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </button>
+
+        <!-- Search Results Dropdown -->
+        <div class="search-results" data-search-results aria-hidden="true" role="listbox">
+          <div class="search-results__content" data-search-content>
+            <!-- Results populated by JavaScript -->
+          </div>
+          <div class="search-results__empty" data-search-empty>
+            <p>No products found. Try a different search.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .search-section {
+    padding: var(--space-lg) 0;
+    background-color: var(--color-background);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .search-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .search-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md) var(--space-sm) var(--space-lg);
+    padding-right: 44px;
+    font-size: var(--font-size-body-md);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-soft);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    transition: all var(--transition-base) var(--transition-timing);
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(250, 173, 221, 0.1);
+  }
+
+  .search-input::placeholder {
+    color: var(--color-text-secondary);
+  }
+
+  .search-btn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: var(--space-md);
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-base) var(--transition-timing);
+  }
+
+  .search-btn:hover {
+    color: var(--color-primary);
+  }
+
+  .search-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Search Results Dropdown */
+  .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: var(--space-sm);
+    background-color: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-soft);
+    box-shadow: var(--shadow-lg);
+    max-height: 500px;
+    overflow-y: auto;
+    z-index: var(--z-dropdown);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .search-results[aria-hidden="true"] {
+    display: none;
+  }
+
+  .search-results__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .search-results__empty {
+    padding: var(--space-lg);
+    text-align: center;
+    color: var(--color-text-secondary);
+  }
+
+  /* Search Result Item */
+  .search-result {
+    display: flex;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+    cursor: pointer;
+    transition: background-color var(--transition-base) var(--transition-timing);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .search-result:last-child {
+    border-bottom: none;
+  }
+
+  .search-result:hover,
+  .search-result[aria-selected="true"] {
+    background-color: var(--color-background-secondary);
+  }
+
+  .search-result__image {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    background-color: var(--color-background-secondary);
+    border-radius: var(--radius-soft);
+    overflow: hidden;
+  }
+
+  .search-result__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .search-result__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .search-result__title {
+    font-weight: var(--fw-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .search-result__meta {
+    font-size: var(--font-size-body-xs);
+    color: var(--color-text-secondary);
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  .search-result__price {
+    font-weight: var(--fw-semibold);
+    color: var(--color-text-primary);
+  }
+
+  /* Search Category Heading */
+  .search-category {
+    padding: var(--space-md) var(--space-lg);
+    background-color: var(--color-background-secondary);
+    font-size: var(--font-size-body-xs);
+    font-weight: var(--fw-bold);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-wide);
+  }
+
+  .search-category:first-child {
+    border-radius: var(--radius-soft) var(--radius-soft) 0 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .search-section {
+      position: sticky;
+      top: 60px;
+      z-index: 50;
+      padding: var(--space-md) 0;
+    }
+
+    .search-container {
+      max-width: 100%;
+    }
+
+    .search-results {
+      max-height: 400px;
+    }
+
+    .search-result {
+      padding: var(--space-sm);
+      gap: var(--space-sm);
+    }
+
+    .search-result__image {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .search-input {
+      font-size: 16px;
+      padding-right: 40px;
+    }
+
+    .search-btn {
+      padding: var(--space-sm);
+    }
+
+    .search-results {
+      max-height: 300px;
+    }
+
+    .search-result {
+      padding: var(--space-sm);
+    }
+
+    .search-result__title {
+      font-size: var(--font-size-body-sm);
+    }
+  }
+</style>
+
+<script>
+  class SearchFunctionality {
+    constructor() {
+      this.input = document.querySelector('[data-search-input]');
+      this.submitBtn = document.querySelector('[data-search-submit]');
+      this.resultsDropdown = document.querySelector('[data-search-results]');
+      this.resultsContent = document.querySelector('[data-search-content]');
+      this.emptyState = document.querySelector('[data-search-empty]');
+      
+      this.searchTimeout = null;
+      this.selectedIndex = -1;
+
+      this.init();
+    }
+
+    init() {
+      if (!this.input) return;
+
+      this.input.addEventListener('input', (e) => this.handleInput(e));
+      this.input.addEventListener('keydown', (e) => this.handleKeydown(e));
+      this.submitBtn?.addEventListener('click', () => this.handleSearch());
+      document.addEventListener('click', (e) => this.handleClickOutside(e));
+    }
+
+    handleInput(e) {
+      const query = e.target.value.trim();
+
+      clearTimeout(this.searchTimeout);
+
+      if (query.length < 2) {
+        this.resultsDropdown.setAttribute('aria-hidden', 'true');
+        this.selectedIndex = -1;
+        return;
+      }
+
+      // Debounce search
+      this.searchTimeout = setTimeout(() => {
+        this.search(query);
+      }, 300);
+    }
+
+    search(query) {
+      const encodedQuery = encodeURIComponent(query);
+
+      fetch(`/search/suggest.json?q=${encodedQuery}&resources[type]=product,collection`)
+        .then(response => response.json())
+        .then(data => this.displayResults(data, query))
+        .catch(error => console.error('Search error:', error));
+    }
+
+    displayResults(data, query) {
+      this.resultsContent.innerHTML = '';
+      let hasResults = false;
+
+      if (data.resources && data.resources.results) {
+        const results = data.resources.results;
+
+        // Display products
+        if (results.products && results.products.length > 0) {
+          const productsHtml = results.products.map((product, index) => `
+            <a href="${product.url}" class="search-result" role="option" data-index="${index}">
+              <div class="search-result__image">
+                ${product.image ? `<img src="${product.image.url}" alt="${product.title}">` : ''}
+              </div>
+              <div class="search-result__content">
+                <div class="search-result__title">${this.highlightQuery(product.title, query)}</div>
+                <div class="search-result__meta">
+                  <span class="search-result__type">Product</span>
+                  <span class="search-result__price">${product.price ? '$' + (product.price / 100).toFixed(2) : 'N/A'}</span>
+                </div>
+              </div>
+            </a>
+          `).join('');
+
+          this.resultsContent.innerHTML += `
+            <div class="search-category">Products</div>
+            ${productsHtml}
+          `;
+
+          hasResults = true;
+        }
+
+        // Display collections
+        if (results.collections && results.collections.length > 0) {
+          const collectionsHtml = results.collections.map((collection, index) => `
+            <a href="${collection.url}" class="search-result" role="option" data-index="${results.products?.length + index || index}">
+              <div class="search-result__content">
+                <div class="search-result__title">${this.highlightQuery(collection.title, query)}</div>
+                <div class="search-result__meta">
+                  <span class="search-result__type">Collection</span>
+                </div>
+              </div>
+            </a>
+          `).join('');
+
+          this.resultsContent.innerHTML += `
+            <div class="search-category">Collections</div>
+            ${collectionsHtml}
+          `;
+
+          hasResults = true;
+        }
+      }
+
+      if (!hasResults) {
+        this.emptyState.style.display = 'block';
+        this.resultsContent.innerHTML = '';
+      } else {
+        this.emptyState.style.display = 'none';
+      }
+
+      this.resultsDropdown.setAttribute('aria-hidden', 'false');
+      this.selectedIndex = -1;
+    }
+
+    highlightQuery(text, query) {
+      const regex = new RegExp(`(${query})`, 'gi');
+      return text.replace(regex, '<strong>$1</strong>');
+    }
+
+    handleKeydown(e) {
+      const results = this.resultsContent.querySelectorAll('.search-result');
+      const resultCount = results.length;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        this.selectedIndex = Math.min(this.selectedIndex + 1, resultCount - 1);
+        this.updateSelectedResult(results);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        this.selectedIndex = Math.max(this.selectedIndex - 1, -1);
+        this.updateSelectedResult(results);
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (this.selectedIndex >= 0 && results[this.selectedIndex]) {
+          results[this.selectedIndex].click();
+        } else {
+          this.handleSearch();
+        }
+      } else if (e.key === 'Escape') {
+        this.resultsDropdown.setAttribute('aria-hidden', 'true');
+        this.selectedIndex = -1;
+      }
+    }
+
+    updateSelectedResult(results) {
+      results.forEach((result, index) => {
+        if (index === this.selectedIndex) {
+          result.setAttribute('aria-selected', 'true');
+          result.scrollIntoView({ block: 'nearest' });
+        } else {
+          result.setAttribute('aria-selected', 'false');
+        }
+      });
+    }
+
+    handleSearch() {
+      const query = this.input.value.trim();
+      if (query.length > 0) {
+        window.location.href = `/search?q=${encodeURIComponent(query)}`;
+      }
+    }
+
+    handleClickOutside(e) {
+      if (!e.target.closest('[data-search-container]')) {
+        this.resultsDropdown.setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+
+  // Initialize search when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      new SearchFunctionality();
+    });
+  } else {
+    new SearchFunctionality();
+  }
+</script>

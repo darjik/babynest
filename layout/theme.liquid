@@ -39,6 +39,12 @@
   <!-- Design Token System (Global Styles) -->
   {{ 'design-tokens.css' | asset_url | stylesheet_tag }}
 
+  <!-- Mobile Responsive Enhancements -->
+  {% snippet 'mobile-responsive' %}
+
+  <!-- Microinteractions & Animations -->
+  {% snippet 'microinteractions' %}
+
   <!-- Global Theme Stylesheet -->
   <style>
     :root {

@@ -1,0 +1,637 @@
+{% comment %}
+  Microinteractions & Animations Enhancement - BabyNest Kids Apparel Store
+  Advanced animations, hover effects, and micro-interactions for delightful UX
+  Production-ready with performance optimizations
+{% endcomment %}
+
+<style>
+  /* ============================================
+     ENHANCED ANIMATION LIBRARY
+     ============================================ */
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translate(0, 20px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translate(0, -20px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes fadeInLeft {
+    from {
+      opacity: 0;
+      transform: translate(-20px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes fadeInRight {
+    from {
+      opacity: 0;
+      transform: translate(20px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(250, 173, 221, 0.7);
+    }
+    50% {
+      box-shadow: 0 0 0 10px rgba(250, 173, 221, 0);
+    }
+  }
+
+  @keyframes wave {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes wiggle {
+    0%, 100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(-1deg);
+    }
+    75% {
+      transform: rotate(1deg);
+    }
+  }
+
+  /* ============================================
+     PRODUCT CARD MICROINTERACTIONS
+     ============================================ */
+
+  .product-card {
+    animation: fadeInUp 600ms var(--transition-timing) both;
+  }
+
+  .product-card:nth-child(1) { animation-delay: 0ms; }
+  .product-card:nth-child(2) { animation-delay: 50ms; }
+  .product-card:nth-child(3) { animation-delay: 100ms; }
+  .product-card:nth-child(4) { animation-delay: 150ms; }
+  .product-card:nth-child(5) { animation-delay: 200ms; }
+  .product-card:nth-child(6) { animation-delay: 250ms; }
+  .product-card:nth-child(7) { animation-delay: 300ms; }
+  .product-card:nth-child(8) { animation-delay: 350ms; }
+
+  .product-card:hover {
+    animation: none;
+  }
+
+  /* Product card badge animation */
+  .product-card__badge {
+    animation: slideDown 400ms var(--transition-timing);
+  }
+
+  /* Product card image zoom on hover */
+  .product-card__image {
+    transition: transform var(--transition-base) var(--transition-timing);
+  }
+
+  .product-card:hover .product-card__image--primary {
+    transform: scale(1.08);
+  }
+
+  .product-card:hover .product-card__image--secondary {
+    transform: scale(1.08);
+  }
+
+  /* ============================================
+     BUTTON MICROINTERACTIONS
+     ============================================ */
+
+  .button {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 600ms, height 600ms;
+  }
+
+  .button:active::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  /* Button hover lift effect */
+  .button--primary:hover:not(:disabled),
+  .button--outline:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .button--primary:active:not(:disabled),
+  .button--outline:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  /* ============================================
+     CARD & SECTION ANIMATIONS
+     ============================================ */
+
+  .featured-categories__item {
+    animation: fadeInUp 500ms var(--transition-timing) both;
+  }
+
+  .featured-categories__item:nth-child(1) { animation-delay: 0ms; }
+  .featured-categories__item:nth-child(2) { animation-delay: 100ms; }
+  .featured-categories__item:nth-child(3) { animation-delay: 200ms; }
+
+  .trust-section__item {
+    animation: fadeInUp 500ms var(--transition-timing) both;
+  }
+
+  .trust-section__item:nth-child(1) { animation-delay: 0ms; }
+  .trust-section__item:nth-child(2) { animation-delay: 100ms; }
+  .trust-section__item:nth-child(3) { animation-delay: 200ms; }
+  .trust-section__item:nth-child(4) { animation-delay: 300ms; }
+
+  .social-gallery__item {
+    animation: fadeInUp 500ms var(--transition-timing) both;
+  }
+
+  .social-gallery__item:nth-child(1) { animation-delay: 0ms; }
+  .social-gallery__item:nth-child(2) { animation-delay: 50ms; }
+  .social-gallery__item:nth-child(3) { animation-delay: 100ms; }
+  .social-gallery__item:nth-child(4) { animation-delay: 150ms; }
+
+  /* ============================================
+     FORM INTERACTIONS
+     ============================================ */
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  textarea,
+  select {
+    transition: border-color var(--transition-base) var(--transition-timing),
+                box-shadow var(--transition-base) var(--transition-timing),
+                background-color var(--transition-base) var(--transition-timing);
+  }
+
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="tel"]:focus,
+  input[type="number"]:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(250, 173, 221, 0.1);
+    outline: none;
+  }
+
+  /* Floating label animation */
+  .form-group__label {
+    transition: transform var(--transition-base) var(--transition-timing),
+                font-size var(--transition-base) var(--transition-timing),
+                color var(--transition-base) var(--transition-timing);
+  }
+
+  input:focus ~ .form-group__label,
+  input:not(:placeholder-shown) ~ .form-group__label {
+    transform: translateY(-25px);
+    font-size: var(--font-size-body-xs);
+    color: var(--color-primary);
+  }
+
+  /* Success checkmark animation */
+  .form-success {
+    animation: scaleIn 300ms var(--transition-timing);
+  }
+
+  .form-success::before {
+    content: '✓';
+    display: inline-block;
+    animation: bounce 500ms var(--transition-timing);
+  }
+
+  /* ============================================
+     NAVIGATION & HEADER INTERACTIONS
+     ============================================ */
+
+  .header__nav-link {
+    position: relative;
+    transition: color var(--transition-base) var(--transition-timing);
+  }
+
+  .header__nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-primary);
+    transition: width var(--transition-base) var(--transition-timing);
+  }
+
+  .header__nav-link:hover::after {
+    width: 100%;
+  }
+
+  /* Dropdown slide down animation */
+  .header__dropdown {
+    animation: fadeInDown 200ms var(--transition-timing);
+  }
+
+  /* Cart icon pulse when item added */
+  .header__cart-count {
+    animation: pulse-glow 600ms var(--transition-timing);
+  }
+
+  /* ============================================
+     HERO BANNER ANIMATIONS
+     ============================================ */
+
+  .hero-banner__slide {
+    animation: fadeInUp 800ms var(--transition-timing) both;
+  }
+
+  .hero-banner__title {
+    animation: fadeInUp 800ms 200ms var(--transition-timing) both;
+  }
+
+  .hero-banner__description {
+    animation: fadeInUp 800ms 400ms var(--transition-timing) both;
+  }
+
+  .hero-banner__cta {
+    animation: fadeInUp 800ms 600ms var(--transition-timing) both;
+  }
+
+  /* Hero banner image transition */
+  .hero-banner__image {
+    transition: opacity 800ms var(--transition-timing);
+  }
+
+  /* ============================================
+     ACCORDION & DISCLOSURE INTERACTIONS
+     ============================================ */
+
+  .accordion-trigger {
+    transition: color var(--transition-base) var(--transition-timing),
+                background-color var(--transition-base) var(--transition-timing);
+  }
+
+  .accordion-trigger:hover {
+    background-color: var(--color-background-secondary);
+    color: var(--color-primary);
+  }
+
+  .accordion-trigger svg {
+    transition: transform var(--transition-base) var(--transition-timing);
+  }
+
+  .accordion-trigger[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+  }
+
+  .accordion-panel {
+    animation: slideDown 300ms var(--transition-timing) when revealed;
+  }
+
+  /* ============================================
+     MODAL & DRAWER ANIMATIONS
+     ============================================ */
+
+  .cart-drawer {
+    animation: slideInRight 300ms var(--transition-timing);
+  }
+
+  .cart-drawer__overlay {
+    animation: fadeIn 300ms var(--transition-timing);
+  }
+
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideOutRight {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* ============================================
+     LOADING SKELETON ANIMATION
+     ============================================ */
+
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--color-background-secondary) 25%,
+      var(--color-background) 50%,
+      var(--color-background-secondary) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  /* ============================================
+     SCROLL-TRIGGERED ANIMATIONS
+     ============================================ */
+
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .animate-on-scroll.visible {
+    animation: fadeInUp 600ms var(--transition-timing) forwards;
+  }
+
+  /* ============================================
+     BADGE & NOTIFICATION ANIMATIONS
+     ============================================ */
+
+  .badge {
+    animation: scaleIn 300ms var(--transition-timing);
+  }
+
+  .notification {
+    animation: slideDown 400ms var(--transition-timing);
+  }
+
+  .notification__close {
+    transition: transform var(--transition-base) var(--transition-timing);
+  }
+
+  .notification__close:hover {
+    transform: rotate(90deg);
+  }
+
+  /* ============================================
+     QUANTITY CONTROL MICROINTERACTIONS
+     ============================================ */
+
+  .product-quantity__btn {
+    transition: all var(--transition-base) var(--transition-timing);
+  }
+
+  .product-quantity__btn:hover:not(:disabled) {
+    background-color: var(--color-primary);
+    color: white;
+    transform: scale(1.1);
+  }
+
+  .product-quantity__btn:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+
+  .product-quantity__input {
+    transition: border-color var(--transition-base) var(--transition-timing);
+  }
+
+  /* ============================================
+     PRICE CHANGE ANIMATION
+     ============================================ */
+
+  .product-price {
+    transition: all var(--transition-base) var(--transition-timing);
+  }
+
+  .product-price.updated {
+    animation: pulse 400ms var(--transition-timing);
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  /* ============================================
+     IMAGE GALLERY ANIMATIONS
+     ============================================ */
+
+  .product-gallery__image {
+    transition: opacity var(--transition-base) var(--transition-timing);
+  }
+
+  .product-gallery__thumbnail {
+    transition: all var(--transition-base) var(--transition-timing);
+  }
+
+  .product-gallery__thumbnail:hover {
+    transform: scale(0.95);
+    border-color: var(--color-primary);
+  }
+
+  .product-gallery__thumbnail--active {
+    border-color: var(--color-primary);
+  }
+
+  /* ============================================
+     STAR RATING ANIMATION
+     ============================================ */
+
+  .star--filled {
+    animation: scaleIn 300ms var(--transition-timing);
+  }
+
+  .star--filled:nth-child(1) { animation-delay: 0ms; }
+  .star--filled:nth-child(2) { animation-delay: 50ms; }
+  .star--filled:nth-child(3) { animation-delay: 100ms; }
+  .star--filled:nth-child(4) { animation-delay: 150ms; }
+  .star--filled:nth-child(5) { animation-delay: 200ms; }
+
+  /* ============================================
+     LINK HOVER EFFECTS
+     ============================================ */
+
+  a {
+    transition: color var(--transition-base) var(--transition-timing);
+  }
+
+  a:hover {
+    color: var(--color-primary);
+  }
+
+  /* ============================================
+     FOCUS-VISIBLE STATES FOR KEYBOARD NAV
+     ============================================ */
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* ============================================
+     DISABLE ANIMATIONS ON SLOW DEVICES
+     ============================================ */
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+
+<script>
+  // Scroll-triggered animations
+  class ScrollAnimations {
+    constructor() {
+      this.init();
+    }
+
+    init() {
+      this.observeElements();
+      this.setupScrollListeners();
+    }
+
+    observeElements() {
+      const elements = document.querySelectorAll('.animate-on-scroll');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      elements.forEach(el => observer.observe(el));
+    }
+
+    setupScrollListeners() {
+      let isScrolling = false;
+
+      window.addEventListener('scroll', () => {
+        if (isScrolling) return;
+        isScrolling = true;
+
+        requestAnimationFrame(() => {
+          isScrolling = false;
+        });
+      });
+    }
+  }
+
+  // Initialize scroll animations
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      new ScrollAnimations();
+    });
+  } else {
+    new ScrollAnimations();
+  }
+
+  // Ripple effect on button click
+  document.addEventListener('click', (e) => {
+    const button = e.target.closest('button, a.button');
+    if (button) {
+      const ripple = document.createElement('span');
+      const rect = button.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = e.clientX - rect.left - size / 2;
+      const y = e.clientY - rect.top - size / 2;
+
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = x + 'px';
+      ripple.style.top = y + 'px';
+    }
+  });
+</script>
