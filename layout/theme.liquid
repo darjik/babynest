@@ -40,10 +40,16 @@
   {{ 'design-tokens.css' | asset_url | stylesheet_tag }}
 
   <!-- Mobile Responsive Enhancements -->
-  {% snippet 'mobile-responsive' %}
+  {% include 'mobile-responsive' %}
 
   <!-- Microinteractions & Animations -->
-  {% snippet 'microinteractions' %}
+  {% include 'microinteractions' %}
+
+  <!-- WCAG Accessibility Audit -->
+  {% include 'accessibility-audit' %}
+
+  <!-- Form Validation & Error States -->
+  {% include 'form-validation' %}
 
   <!-- Global Theme Stylesheet -->
   <style>
@@ -179,7 +185,7 @@
   {% section 'header' %}
 
   <!-- Cart Drawer (Global) -->
-  {% snippet 'cart-drawer' %}
+  {% include 'cart-drawer' %}
 
   <!-- Main Content Area -->
   <main id="main-content" role="main">

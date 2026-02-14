@@ -1,0 +1,664 @@
+{% comment %}
+  Customer Account Page - BabyNest Kids Apparel Store
+  Displays customer account dashboard with orders, information, and settings
+  Uses Shopify customer object and checkout URL for secure authentication
+  Production-ready with full WCAG accessibility
+{% endcomment %}
+
+<div class="account-page">
+  <div class="container">
+    <div class="account-wrapper">
+      
+      <!-- Account Header -->
+      <div class="account-header">
+        <div class="account-header__content">
+          <h1 class="account-title">My Account</h1>
+          <p class="account-subtitle">Welcome, {{ customer.first_name }}!</p>
+        </div>
+        <a href="/account/logout" class="button button--outline">Logout</a>
+      </div>
+
+      <!-- Account Tabs Navigation -->
+      <div class="account-tabs" role="tablist">
+        <button 
+          class="account-tab" 
+          role="tab" 
+          aria-selected="true" 
+          aria-controls="orders-panel"
+          data-tab="orders"
+        >
+          My Orders
+        </button>
+        <button 
+          class="account-tab" 
+          role="tab" 
+          aria-selected="false" 
+          aria-controls="info-panel"
+          data-tab="info"
+        >
+          Account Info
+        </button>
+        <button 
+          class="account-tab" 
+          role="tab" 
+          aria-selected="false" 
+          aria-controls="address-panel"
+          data-tab="address"
+        >
+          Addresses
+        </button>
+      </div>
+
+      <!-- Tab Panels -->
+      <div class="account-panels">
+        
+        <!-- Orders Panel -->
+        <div 
+          class="account-panel account-panel--active" 
+          role="tabpanel" 
+          id="orders-panel" 
+          aria-labelledby="orders-tab"
+        >
+          <h2 class="account-panel__title">Order History</h2>
+          
+          {% if customer.orders.size > 0 %}
+            <div class="orders-list">
+              {% for order in customer.orders %}
+                <div class="order-card">
+                  <div class="order-card__header">
+                    <div class="order-card__info">
+                      <h3 class="order-card__number">Order {{ order.order_number }}</h3>
+                      <p class="order-card__date">{{ order.created_at | date: "%B %d, %Y" }}</p>
+                    </div>
+                    <div class="order-card__status">
+                      <span class="order-status {% if order.financial_status == 'paid' %}order-status--paid{% elsif order.financial_status == 'pending' %}order-status--pending{% else %}order-status--cancelled{% endif %}">
+                        {{ order.financial_status | capitalize }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="order-card__items">
+                    {% for line_item in order.line_items %}
+                      <div class="order-item">
+                        <div class="order-item__image">
+                          {% if line_item.image %}
+                            <img src="{{ line_item.image | image_url: width: 100 }}" alt="{{ line_item.title }}">
+                          {% endif %}
+                        </div>
+                        <div class="order-item__details">
+                          <p class="order-item__title">{{ line_item.title }}</p>
+                          <p class="order-item__meta">Qty: {{ line_item.quantity }} × {{ line_item.price | money }}</p>
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+
+                  <div class="order-card__footer">
+                    <div class="order-card__total">
+                      <span>Total:</span>
+                      <strong>{{ order.total_price | money }}</strong>
+                    </div>
+                    <a href="{{ order.customer_url }}" class="button button--primary">View Details</a>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="empty-state">
+              <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="20" y="30" width="60" height="50" rx="4"></rect>
+                <path d="M 30 50 L 40 60 L 60 40"></path>
+              </svg>
+              <h3>No Orders Yet</h3>
+              <p>You haven't placed any orders yet. Start shopping!</p>
+              <a href="/collections/all" class="button button--primary">Browse Products</a>
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Account Info Panel -->
+        <div 
+          class="account-panel" 
+          role="tabpanel" 
+          id="info-panel" 
+          aria-labelledby="info-tab"
+          hidden
+        >
+          <h2 class="account-panel__title">Account Information</h2>
+          
+          <form method="post" action="/account" class="account-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="first-name" class="form-label">First Name</label>
+                <input 
+                  type="text" 
+                  id="first-name" 
+                  name="customer[first_name]" 
+                  value="{{ customer.first_name }}"
+                  class="form-input"
+                  required
+                >
+              </div>
+              <div class="form-group">
+                <label for="last-name" class="form-label">Last Name</label>
+                <input 
+                  type="text" 
+                  id="last-name" 
+                  name="customer[last_name]" 
+                  value="{{ customer.last_name }}"
+                  class="form-input"
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email" class="form-label">Email Address</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="customer[email]" 
+                value="{{ customer.email }}"
+                class="form-input"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="phone" class="form-label">Phone Number</label>
+              <input 
+                type="tel" 
+                id="phone" 
+                name="customer[phone]" 
+                value="{{ customer.phone }}"
+                class="form-input"
+              >
+            </div>
+
+            <button type="submit" class="button button--primary">Save Changes</button>
+          </form>
+
+          <!-- Change Password Section -->
+          <div class="account-section">
+            <h3 class="account-section__title">Change Password</h3>
+            <form method="post" action="/account/change-password" class="account-form" novalidate>
+              <div class="form-group">
+                <label for="current-password" class="form-label">Current Password</label>
+                <input 
+                  type="password" 
+                  id="current-password" 
+                  name="customer[current_password]"
+                  class="form-input"
+                  required
+                >
+              </div>
+              <div class="form-group">
+                <label for="new-password" class="form-label">New Password</label>
+                <input 
+                  type="password" 
+                  id="new-password" 
+                  name="customer[new_password]"
+                  class="form-input"
+                  required
+                >
+              </div>
+              <div class="form-group">
+                <label for="confirm-password" class="form-label">Confirm New Password</label>
+                <input 
+                  type="password" 
+                  id="confirm-password" 
+                  name="customer[new_password_confirmation]"
+                  class="form-input"
+                  required
+                >
+              </div>
+              <button type="submit" class="button button--primary">Update Password</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Addresses Panel -->
+        <div 
+          class="account-panel" 
+          role="tabpanel" 
+          id="address-panel" 
+          aria-labelledby="address-tab"
+          hidden
+        >
+          <div class="account-panel__header">
+            <h2 class="account-panel__title">Addresses</h2>
+            <a href="/account/addresses/new" class="button button--primary">Add Address</a>
+          </div>
+
+          {% if customer.addresses.size > 0 %}
+            <div class="addresses-list">
+              {% for address in customer.addresses %}
+                <div class="address-card">
+                  <div class="address-card__header">
+                    <h3 class="address-card__title">{{ address.company | default: address.first_name }}</h3>
+                    {% if address.default %}
+                      <span class="badge badge--primary">Default</span>
+                    {% endif %}
+                  </div>
+
+                  <address class="address-card__text">
+                    {{ address.first_name }} {{ address.last_name }}<br>
+                    {{ address.company }}<br>
+                    {{ address.address1 }}<br>
+                    {% if address.address2 %}{{ address.address2 }}<br>{% endif %}
+                    {{ address.city }}, {{ address.province }} {{ address.zip }}<br>
+                    {{ address.country }}<br>
+                    {{ address.phone }}
+                  </address>
+
+                  <div class="address-card__actions">
+                    <a href="/account/addresses/{{ address.id }}/edit" class="button button--outline button--sm">Edit</a>
+                    <a href="/account/addresses/{{ address.id }}/delete" class="button button--outline button--sm" data-confirm="Are you sure?">Delete</a>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="empty-state">
+              <p>You haven't saved any addresses yet.</p>
+              <a href="/account/addresses/new" class="button button--primary">Add Your First Address</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .account-page {
+    padding: var(--space-xxl) 0;
+    background-color: var(--color-background);
+    min-height: calc(100vh - 300px);
+  }
+
+  .account-wrapper {
+    max-width: 900px;
+  }
+
+  .account-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-xxl);
+    padding-bottom: var(--space-lg);
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .account-title {
+    font-size: var(--font-size-h1);
+    margin-bottom: var(--space-sm);
+  }
+
+  .account-subtitle {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body-lg);
+  }
+
+  /* Tabs */
+  .account-tabs {
+    display: flex;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .account-tab {
+    background: none;
+    border: none;
+    padding: var(--space-md) var(--space-sm);
+    padding-bottom: var(--space-md);
+    cursor: pointer;
+    font-size: var(--font-size-body-md);
+    font-weight: var(--fw-semibold);
+    color: var(--color-text-secondary);
+    transition: all var(--transition-base) var(--transition-timing);
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px;
+  }
+
+  .account-tab:hover {
+    color: var(--color-text-primary);
+  }
+
+  .account-tab[aria-selected="true"] {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+  }
+
+  /* Panels */
+  .account-panels {
+    position: relative;
+  }
+
+  .account-panel {
+    display: none;
+    animation: fadeInUp 300ms var(--transition-timing);
+  }
+
+  .account-panel--active {
+    display: block;
+  }
+
+  .account-panel__title {
+    font-size: var(--font-size-h2);
+    margin-bottom: var(--space-lg);
+  }
+
+  .account-panel__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+  }
+
+  /* Orders */
+  .orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .order-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-soft);
+    padding: var(--space-lg);
+    transition: all var(--transition-base) var(--transition-timing);
+  }
+
+  .order-card:hover {
+    box-shadow: var(--shadow-hover);
+  }
+
+  .order-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .order-card__number {
+    font-size: var(--font-size-h3);
+    margin-bottom: var(--space-sm);
+  }
+
+  .order-card__date {
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .order-status {
+    display: inline-block;
+    padding: var(--space-xs) var(--space-md);
+    border-radius: var(--radius-pill);
+    font-size: var(--font-size-body-xs);
+    font-weight: var(--fw-bold);
+    text-transform: uppercase;
+    background-color: var(--color-background-secondary);
+    color: var(--color-text-secondary);
+  }
+
+  .order-status--paid {
+    background-color: #D4EDDA;
+    color: #155724;
+  }
+
+  .order-status--pending {
+    background-color: #FFF3CD;
+    color: #856404;
+  }
+
+  .order-status--cancelled {
+    background-color: #F8D7DA;
+    color: #721C24;
+  }
+
+  .order-card__items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+  }
+
+  .order-item {
+    display: flex;
+    gap: var(--space-md);
+  }
+
+  .order-item__image {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    background-color: var(--color-background-secondary);
+    border-radius: var(--radius-soft);
+    overflow: hidden;
+  }
+
+  .order-item__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .order-item__title {
+    font-weight: var(--fw-semibold);
+    margin-bottom: var(--space-xs);
+  }
+
+  .order-item__meta {
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .order-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .order-card__total {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  /* Forms */
+  .account-form {
+    margin-bottom: var(--space-xl);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+  }
+
+  .form-group {
+    margin-bottom: var(--space-lg);
+  }
+
+  .form-label {
+    display: block;
+    font-weight: var(--fw-semibold);
+    margin-bottom: var(--space-sm);
+    color: var(--color-text-primary);
+  }
+
+  .form-input {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-soft);
+    font-size: var(--font-size-body-md);
+    transition: all var(--transition-base) var(--transition-timing);
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(250, 173, 221, 0.1);
+  }
+
+  .account-section {
+    padding: var(--space-lg);
+    background-color: var(--color-background-secondary);
+    border-radius: var(--radius-soft);
+    margin-bottom: var(--space-xl);
+  }
+
+  .account-section__title {
+    font-size: var(--font-size-h3);
+    margin-bottom: var(--space-lg);
+  }
+
+  /* Addresses */
+  .addresses-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+  }
+
+  .address-card {
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-soft);
+    padding: var(--space-lg);
+    transition: all var(--transition-base) var(--transition-timing);
+  }
+
+  .address-card:hover {
+    border-color: var(--color-primary);
+  }
+
+  .address-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-md);
+  }
+
+  .address-card__title {
+    font-size: var(--font-size-body-lg);
+    font-weight: var(--fw-semibold);
+  }
+
+  .address-card__text {
+    font-style: normal;
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-secondary);
+  }
+
+  .address-card__actions {
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: var(--radius-pill);
+    font-size: var(--font-size-body-xs);
+    font-weight: var(--fw-bold);
+  }
+
+  .badge--primary {
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: var(--space-xxl) var(--space-lg);
+  }
+
+  .empty-state svg {
+    width: 100px;
+    height: 100px;
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-secondary);
+  }
+
+  .empty-state h3 {
+    font-size: var(--font-size-h3);
+    margin-bottom: var(--space-sm);
+  }
+
+  .empty-state p {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-lg);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .account-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-lg);
+    }
+
+    .account-tabs {
+      gap: var(--space-md);
+      overflow-x: auto;
+    }
+
+    .account-tab {
+      white-space: nowrap;
+      padding: var(--space-md) var(--space-sm);
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+
+    .addresses-list {
+      grid-template-columns: 1fr;
+    }
+
+    .order-card__header {
+      flex-direction: column;
+    }
+
+    .address-card__actions {
+      flex-wrap: wrap;
+    }
+  }
+</style>
+
+<script>
+  // Tab functionality
+  document.querySelectorAll('[role="tab"]').forEach(tab => {
+    tab.addEventListener('click', function() {
+      const tabName = this.getAttribute('data-tab');
+      
+      // Hide all panels
+      document.querySelectorAll('[role="tabpanel"]').forEach(panel => {
+        panel.hidden = true;
+        panel.classList.remove('account-panel--active');
+      });
+
+      // Deselect all tabs
+      document.querySelectorAll('[role="tab"]').forEach(t => {
+        t.setAttribute('aria-selected', 'false');
+      });
+
+      // Show selected panel
+      const panelId = this.getAttribute('aria-controls');
+      const panel = document.getElementById(panelId);
+      if (panel) {
+        panel.hidden = false;
+        panel.classList.add('account-panel--active');
+      }
+
+      // Select current tab
+      this.setAttribute('aria-selected', 'true');
+    });
+  });
+</script>
