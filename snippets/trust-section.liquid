@@ -1,0 +1,127 @@
+{% comment %}
+  Trust Section Snippet - BabyNest Kids Apparel Store
+  Displays 4 trust/value proposition cards
+{% endcomment %}
+
+<section class="trust-section">
+  <div class="container">
+    <h2 class="trust-section__title">Why Choose BabyNest</h2>
+    
+    <div class="trust-section__grid">
+      <div class="trust-card">
+        <div class="trust-card__icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <path d="M24 4L29.5 18H44L33.25 26L38.75 40L24 32L9.25 40L14.75 26L4 18H18.5L24 4Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <h3>Premium Quality</h3>
+        <p>Made with organic, soft fabrics that are gentle on delicate skin</p>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-card__icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <path d="M24 2C12.95 2 4 10.95 4 22C4 33.05 12.95 42 24 42C35.05 42 44 33.05 44 22C44 10.95 35.05 2 24 2ZM20 32L10 22L12.83 19.17L20 26.34L35.17 11L38 13.83L20 32Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <h3>Safe & Tested</h3>
+        <p>All products undergo rigorous safety testing and certifications</p>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-card__icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <path d="M24 2C12.95 2 4 10.95 4 22V44H44V22C44 10.95 35.05 2 24 2ZM24 8C30.63 8 36 13.37 36 20H12C12 13.37 17.37 8 24 8Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <h3>Fast Shipping</h3>
+        <p>Quick delivery to get your little ones dressed in style</p>
+      </div>
+
+      <div class="trust-card">
+        <div class="trust-card__icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <path d="M44 6H4C1.8 6 0 7.8 0 10V38C0 40.2 1.8 42 4 42H44C46.2 42 48 40.2 48 38V10C48 7.8 46.2 6 44 6ZM44 12V14H4V12H44ZM4 38V20H44V38H4Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <h3>Easy Returns</h3>
+        <p>30-day return policy with hassle-free returns</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .trust-section {
+    padding: var(--space-xxl) 0;
+    background-color: var(--color-background);
+  }
+
+  .trust-section__title {
+    font-size: var(--font-size-h2);
+    text-align: center;
+    margin-bottom: var(--space-xl);
+  }
+
+  .trust-section__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-lg);
+  }
+
+  .trust-card {
+    text-align: center;
+    padding: var(--space-lg);
+    border-radius: var(--radius-soft);
+    transition: all var(--transition-base) var(--transition-timing);
+  }
+
+  .trust-card:hover {
+    background-color: var(--color-secondary);
+    transform: translateY(-2px);
+  }
+
+  .trust-card__icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto var(--space-md);
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .trust-card h3 {
+    font-size: var(--font-size-lg);
+    margin: 0 0 var(--space-sm) 0;
+  }
+
+  .trust-card p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  @media (max-width: 1024px) {
+    .trust-section__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .trust-section__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-md);
+    }
+
+    .trust-card {
+      padding: var(--space-md);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .trust-section__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

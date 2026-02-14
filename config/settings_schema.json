@@ -1,1 +1,170 @@
-[]
+[
+  {
+    "name": "theme_settings",
+    "theme": true,
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      },
+      {
+        "type": "text",
+        "id": "shop_name",
+        "label": "Shop Name",
+        "default": "BabyNest"
+      },
+      {
+        "type": "richtext",
+        "id": "footer_text",
+        "label": "Footer Text"
+      }
+    ]
+  },
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Header Settings"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Header Logo"
+      },
+      {
+        "type": "link_list",
+        "id": "main_menu",
+        "label": "Main Menu",
+        "default": "main-menu"
+      },
+      {
+        "type": "checkbox",
+        "id": "sticky_header",
+        "label": "Sticky Header",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "transparent_header",
+        "label": "Transparent Header",
+        "default": false
+      }
+    ]
+  },
+  {
+    "name": "Hero Banner",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Hero Banner Settings"
+      },
+      {
+        "type": "range",
+        "id": "banner_height",
+        "label": "Banner Height (px)",
+        "min": 300,
+        "max": 800,
+        "step": 50,
+        "default": 500
+      },
+      {
+        "type": "range",
+        "id": "rotation_interval",
+        "label": "Image Rotation Interval (seconds)",
+        "min": 2,
+        "max": 10,
+        "step": 1,
+        "default": 5
+      },
+      {
+        "type": "color",
+        "id": "overlay_color",
+        "label": "Overlay Color",
+        "default": "#000000"
+      },
+      {
+        "type": "range",
+        "id": "overlay_opacity",
+        "label": "Overlay Opacity (%)",
+        "min": 0,
+        "max": 100,
+        "step": 10,
+        "default": 30
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Color Scheme"
+      },
+      {
+        "type": "color",
+        "id": "primary_color",
+        "label": "Primary Color",
+        "default": "#FADADD"
+      },
+      {
+        "type": "color",
+        "id": "secondary_color",
+        "label": "Secondary Color",
+        "default": "#D6EAF8"
+      },
+      {
+        "type": "color",
+        "id": "text_primary",
+        "label": "Text Primary",
+        "default": "#2C1810"
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background",
+        "default": "#FFFFFF"
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Social Links"
+      },
+      {
+        "type": "text",
+        "id": "facebook_url",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "text",
+        "id": "instagram_url",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "text",
+        "id": "twitter_url",
+        "label": "Twitter URL"
+      },
+      {
+        "type": "text",
+        "id": "youtube_url",
+        "label": "YouTube URL"
+      },
+      {
+        "type": "text",
+        "id": "pinterest_url",
+        "label": "Pinterest URL"
+      }
+    ]
+  }
+]

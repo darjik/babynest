@@ -1,0 +1,82 @@
+{% comment %}
+  Promo Banner Snippet - BabyNest Kids Apparel Store
+  Promotional campaign banner with CTA
+{% endcomment %}
+
+<section class="promo-banner">
+  <div class="container">
+    <div class="promo-banner__content">
+      <h2>Summer Collection 2024</h2>
+      <p>Discover comfortable and stylish clothing for your little ones</p>
+      <a href="/collections/summer-2024" class="btn btn--primary">Shop Now</a>
+    </div>
+    <div class="promo-banner__image">
+      <img src="https://via.placeholder.com/600x400?text=Summer+Collection" alt="Summer Collection" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<style>
+  .promo-banner {
+    padding: var(--space-xxl) 0;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  }
+
+  .promo-banner .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xxl);
+    align-items: center;
+  }
+
+  .promo-banner__content {
+    color: white;
+  }
+
+  .promo-banner__content h2 {
+    font-size: var(--font-size-h1);
+    margin-bottom: var(--space-md);
+  }
+
+  .promo-banner__content p {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-lg);
+    opacity: 0.95;
+  }
+
+  .promo-banner__image {
+    width: 100%;
+    border-radius: var(--radius-soft);
+    overflow: hidden;
+  }
+
+  .promo-banner__image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .promo-banner .container {
+      grid-template-columns: 1fr;
+    }
+
+    .promo-banner__content h2 {
+      font-size: var(--font-size-h2);
+    }
+
+    .promo-banner__content p {
+      font-size: var(--font-size-md);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .promo-banner {
+      padding: var(--space-xl) 0;
+    }
+
+    .promo-banner__content h2 {
+      font-size: var(--font-size-h3);
+    }
+  }
+</style>

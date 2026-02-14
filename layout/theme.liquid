@@ -13,6 +13,12 @@
   {% if settings.favicon %}
     <link rel="shortcut icon" href="{{ settings.favicon | image_url: width: 32 }}">
     <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180 }}">
+  {% else %}
+    <!-- Default favicon - using logo if available -->
+    {% if settings.logo %}
+      <link rel="shortcut icon" href="{{ settings.logo | image_url: width: 32 }}">
+      <link rel="apple-touch-icon" href="{{ settings.logo | image_url: width: 180 }}">
+    {% endif %}
   {% endif %}
 
   <!-- Title & SEO -->

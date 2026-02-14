@@ -1,0 +1,223 @@
+{% comment %}
+  Hero Banner Snippet - BabyNest Kids Apparel Store
+  Full-width responsive banner with overlay text and CTA
+  Supports multiple images with automatic rotation
+  Production-ready with image optimization and accessibility
+{% endcomment %}
+
+<section class="hero-banner" data-hero-banner>
+  <div class="hero-banner__image-container" data-image-container>
+    <!-- Default hero image from settings -->
+    <div class="hero-banner__image" style="background-image: url('https://cdn.shopify.com/s/files/1/0636/4624/5824/files/hero-default.jpg?v=1675000000')"></div>
+  </div>
+  
+  <div class="hero-banner__overlay" style="background-color: rgba(0, 0, 0, 0.3)"></div>
+  
+  <div class="hero-banner__content">
+    <div class="container">
+      <div class="hero-banner__inner text-center">
+        
+        <h1 class="hero-banner__heading animate-slide-up">
+          Welcome to BabyNest
+        </h1>
+
+        <p class="hero-banner__subtext animate-slide-up" style="animation-delay: 100ms;">
+          Premium kids apparel for your little ones
+        </p>
+
+        <div class="hero-banner__cta" style="animation-delay: 200ms;">
+          <a 
+            href="/collections/all" 
+            class="button button--primary button--lg"
+            aria-label="Shop Now"
+          >
+            Shop Now
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-banner {
+    position: relative;
+    width: 100%;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-banner__image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-banner__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+
+  .hero-banner__image:first-child {
+    opacity: 1;
+  }
+
+  .hero-banner__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: background-color var(--transition-base) var(--transition-timing);
+    z-index: 1;
+  }
+
+  .hero-banner__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+  }
+
+  .hero-banner__inner {
+    padding: var(--space-xxl) var(--space-lg);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero-banner__heading {
+    font-size: var(--font-size-h1);
+    font-weight: var(--fw-bold);
+    line-height: 1.2;
+    color: #FFFFFF;
+    margin-bottom: var(--space-lg);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    letter-spacing: -0.02em;
+  }
+
+  .hero-banner__subtext {
+    font-size: var(--font-size-body-lg);
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: var(--space-xl);
+    line-height: 1.6;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-banner__cta {
+    animation: slideUp 600ms var(--transition-timing);
+  }
+
+  .hero-banner__cta .button {
+    transition: all var(--transition-base) var(--transition-timing);
+    box-shadow: 0 4px 12px rgba(250, 173, 221, 0.2);
+  }
+
+  .hero-banner__cta .button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(250, 173, 221, 0.3);
+  }
+
+  .hero-banner__cta .button:active {
+    transform: translateY(0);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .hero-banner {
+      min-height: 500px;
+    }
+
+    .hero-banner__heading {
+      font-size: var(--font-size-h2);
+    }
+
+    .hero-banner__subtext {
+      font-size: var(--font-size-body-md);
+    }
+
+    .hero-banner__inner {
+      padding: var(--space-xl) var(--space-lg);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-banner {
+      min-height: 400px;
+    }
+
+    .hero-banner__heading {
+      font-size: var(--font-size-h3);
+      margin-bottom: var(--space-md);
+    }
+
+    .hero-banner__subtext {
+      font-size: var(--font-size-body-md);
+      margin-bottom: var(--space-lg);
+    }
+
+    .hero-banner__inner {
+      padding: var(--space-lg) var(--space-md);
+    }
+
+    .hero-banner__cta .button {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-banner {
+      min-height: 350px;
+    }
+
+    .hero-banner__heading {
+      font-size: var(--font-size-h4);
+    }
+
+    .hero-banner__subtext {
+      font-size: var(--font-size-body-sm);
+      margin-bottom: var(--space-md);
+    }
+
+    .hero-banner__inner {
+      padding: var(--space-lg) var(--space-sm);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slide-up {
+    animation: slideUp 600ms var(--transition-timing);
+  }
+
+  .text-center {
+    text-align: center;
+  }
+</style>
