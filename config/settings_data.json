@@ -14,7 +14,7 @@
     "sticky_header": false,
     "transparent_header": true,
     "hero_banner_image": "shopify://shop_images/Hero_Banner-1.png",
-    "banner_height": 700,
+    "banner_height": 800,
     "rotation_interval": 2,
     "content_for_index": []
   }
