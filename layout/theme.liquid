@@ -204,7 +204,7 @@
   <!-- Scripts -->
   
   <!-- Shopify Analytics -->
-  {{ shop.script_tag_attribute }} type="text/javascript">
+  <script {{ shop.script_tag_attribute }}>
     window.Shopify = window.Shopify || {};
     window.Shopify.shop = "{{ shop.permanent_domain }}";
   </script>
