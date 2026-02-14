@@ -191,7 +191,9 @@
   {%- render 'header' -%}
 
   <!-- Cart Drawer (Global) -->
-  {%- render 'cart-drawer' -%}
+  {%- if settings.cart_type == 'drawer' -%}
+      {%- render 'cart-drawer' -%}
+    {%- endif -%}
 
   <!-- Main Content Area -->
   <main id="main-content" role="main">
