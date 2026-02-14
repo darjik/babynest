@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="{{ shop.locale }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ page_description | escape }}">
+  
+  <!-- Preconnect to External Domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Favicon -->
+  {% if settings.favicon %}
+    <link rel="shortcut icon" href="{{ settings.favicon | image_url: width: 32 }}">
+    <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180 }}">
+  {% endif %}
+
+  <!-- Title & SEO -->
+  <title>
+    {% if template contains 'product' %}
+      {{ product.title }} - {{ shop.name }}
+    {% elsif template contains 'collection' %}
+      {{ collection.title }} - {{ shop.name }}
+    {% else %}
+      {{ page.title }} - {{ shop.name }}
+    {% endif %}
+  </title>
+
+  <!-- Meta Tags -->
+  <meta property="og:title" content="{% if template contains 'product' %}{{ product.title }}{% elsif template contains 'collection' %}{{ collection.title }}{% else %}{{ page.title }}{% endif %} - {{ shop.name }}">
+  <meta property="og:description" content="{% if template contains 'product' %}{{ product.description | strip_html | truncatewords: 20 }}{% elsif template contains 'collection' %}{{ collection.description | strip_html | truncatewords: 20 }}{% else %}{{ page.description | strip_html | truncatewords: 20 }}{% endif %}">
+  <meta property="og:image" content="{% if template contains 'product' %}{{ product.featured_image | image_url: width: 1200 }}{% elsif template contains 'collection' %}{{ collection.image | image_url: width: 1200 }}{% else %}{{ shop.brand.logo | image_url: width: 1200 }}{% endif %}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ canonical_url }}">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  <!-- Design Token System (Global Styles) -->
+  {{ 'design-tokens.css' | asset_url | stylesheet_tag }}
+
+  <!-- Global Theme Stylesheet -->
+  <style>
+    :root {
+      --site-width: 1440px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--color-text-primary);
+      background-color: var(--color-background);
+      line-height: var(--line-height-normal);
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--site-width);
+      margin: 0 auto;
+      padding: 0 var(--space-lg);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 var(--space-md);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 var(--space-sm);
+      }
+    }
+
+    /* Utility Classes */
+    .visually-hidden {
+      position: absolute !important;
+      overflow: hidden;
+      clip: rect(1px 1px 1px 1px);
+      width: 1px;
+      height: 1px;
+      word-wrap: normal;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+      font-size: var(--font-size-body-md);
+      font-weight: var(--fw-semibold);
+      text-decoration: none;
+      border: none;
+      border-radius: var(--radius-soft);
+      padding: var(--space-sm) var(--space-md);
+      cursor: pointer;
+      transition: all var(--transition-base) var(--transition-timing);
+      text-transform: capitalize;
+    }
+
+    .button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .button--primary {
+      background-color: var(--color-primary);
+      color: var(--color-text-on-primary);
+      border: 2px solid var(--color-primary);
+    }
+
+    .button--primary:hover:not(:disabled) {
+      background-color: var(--color-primary-dark);
+      border-color: var(--color-primary-dark);
+    }
+
+    .button--outline {
+      background-color: transparent;
+      color: var(--color-primary);
+      border: 2px solid var(--color-primary);
+    }
+
+    .button--outline:hover:not(:disabled) {
+      background-color: var(--color-primary);
+      color: var(--color-text-on-primary);
+    }
+
+    .button--lg {
+      padding: var(--space-md) var(--space-lg);
+      font-size: var(--font-size-body-lg);
+    }
+
+    .button--full-width {
+      width: 100%;
+    }
+
+    /* Skip to Content Link */
+    .skip-to-content {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--color-primary);
+      color: white;
+      padding: 8px;
+      text-decoration: none;
+      z-index: 100;
+    }
+
+    .skip-to-content:focus {
+      top: 0;
+    }
+  </style>
+
+  <!-- Shopify specific meta tags -->
+  {{ content_for_header }}
+</head>
+
+<body id="PageContainer" class="page-template--{{ template | replace: '.', '-' }}">
+  
+  <!-- Skip to Content Link -->
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+
+  <!-- Header Section -->
+  {% section 'header' %}
+
+  <!-- Cart Drawer (Global) -->
+  {% snippet 'cart-drawer' %}
+
+  <!-- Main Content Area -->
+  <main id="main-content" role="main">
+    {{ content_for_layout }}
+  </main>
+
+  <!-- Footer Section -->
+  {% section 'footer' %}
+
+  <!-- Scripts -->
+  
+  <!-- Shopify Analytics -->
+  {{ shop.script_tag_attribute }} type="text/javascript">
+    window.Shopify = window.Shopify || {};
+    window.Shopify.shop = "{{ shop.permanent_domain }}";
+  </script>
+
+  <!-- Global Theme JavaScript -->
+  <script>
+    // Mobile Menu Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const hamburgerBtn = document.querySelector('[data-hamburger-toggle]');
+      const mobileMenu = document.querySelector('[data-mobile-menu]');
+
+      if (hamburgerBtn && mobileMenu) {
+        hamburgerBtn.addEventListener('click', function() {
+          const isExpanded = this.getAttribute('aria-expanded') === 'true';
+          this.setAttribute('aria-expanded', !isExpanded);
+          mobileMenu.setAttribute('aria-hidden', isExpanded);
+        });
+      }
+    });
+
+    // Form Validation Helper
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    // Handle Add to Cart via Product Card
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('[data-add-to-cart]')) {
+        const btn = e.target.closest('[data-add-to-cart]');
+        const productId = btn.getAttribute('data-product-id');
+        
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            items: [{
+              id: productId,
+              quantity: 1
+            }]
+          })
+        })
+        .then(response => response.json())
+        .then(cart => {
+          // Trigger cart drawer to open
+          const cartDrawer = document.querySelector('[data-cart-drawer]');
+          if (cartDrawer) {
+            cartDrawer.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+          }
+        })
+        .catch(error => console.error('Error:', error));
+      }
+    });
+
+    // Smooth Scroll for Anchor Links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href !== '#' && document.querySelector(href)) {
+          e.preventDefault();
+          document.querySelector(href).scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Close Mobile Menu on Link Click
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('a') && !e.target.closest('[data-hamburger-toggle]')) {
+        const hamburgerBtn = document.querySelector('[data-hamburger-toggle]');
+        const mobileMenu = document.querySelector('[data-mobile-menu]');
+        if (hamburgerBtn && mobileMenu) {
+          hamburgerBtn.setAttribute('aria-expanded', 'false');
+          mobileMenu.setAttribute('aria-hidden', 'true');
+        }
+      }
+    });
+
+    // Keyboard Navigation - Close Menu on Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        const cartDrawer = document.querySelector('[data-cart-drawer]');
+        const hamburgerBtn = document.querySelector('[data-hamburger-toggle]');
+        const mobileMenu = document.querySelector('[data-mobile-menu]');
+
+        if (cartDrawer && cartDrawer.getAttribute('aria-hidden') === 'false') {
+          cartDrawer.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+        }
+
+        if (hamburgerBtn && mobileMenu) {
+          hamburgerBtn.setAttribute('aria-expanded', 'false');
+          mobileMenu.setAttribute('aria-hidden', 'true');
+        }
+      }
+    });
+  </script>
+
+</body>
+
+</html>
