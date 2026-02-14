@@ -5,24 +5,30 @@
   Production-ready with image optimization and accessibility
 {% endcomment %}
 
-<section class="hero-banner" data-hero-banner>
+<section class="hero-banner" data-hero-banner style="min-height: {{ settings.banner_height | default: 500 }}px;">
   <div class="hero-banner__image-container" data-image-container>
-    <!-- Default hero image from settings -->
-    <div class="hero-banner__image" style="background-image: url('https://cdn.shopify.com/s/files/1/0636/4624/5824/files/hero-default.jpg?v=1675000000')"></div>
+    {% if settings.hero_banner_image %}
+      <div 
+        class="hero-banner__image" 
+        style="background-image: url('{{ settings.hero_banner_image | image_url: width: 1400 }}'); background-size: cover; background-position: center;"
+      ></div>
+    {% else %}
+      <div class="hero-banner__image" style="background: linear-gradient(135deg, #f5e6d3 0%, #fdd5e0 100%);"></div>
+    {% endif %}
   </div>
   
-  <div class="hero-banner__overlay" style="background-color: rgba(0, 0, 0, 0.3)"></div>
+  <div class="hero-banner__overlay" style="background-color: rgba({{ settings.overlay_color | color_to_rgb }}, {{ settings.overlay_opacity | default: 30 | divided_by: 100.0 }})"></div>
   
   <div class="hero-banner__content">
     <div class="container">
       <div class="hero-banner__inner text-center">
         
         <h1 class="hero-banner__heading animate-slide-up">
-          Welcome to BabyNest
+          {{ settings.hero_banner_title | default: 'Welcome to BabyNest' }}
         </h1>
 
         <p class="hero-banner__subtext animate-slide-up" style="animation-delay: 100ms;">
-          Premium kids apparel for your little ones
+          {{ settings.hero_banner_subtitle | default: 'Premium kids apparel for your little ones' }}
         </p>
 
         <div class="hero-banner__cta" style="animation-delay: 200ms;">
