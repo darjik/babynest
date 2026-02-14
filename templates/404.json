@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-404",
+      "settings": {
+        "heading": "Page not found",
+        "heading_size": "h1",
+        "subheading": "The page you are looking for could not be found.",
+        "subheading_size": "body",
+        "color_scheme": "scheme-1",
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

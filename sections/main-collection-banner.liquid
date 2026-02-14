@@ -1,0 +1,143 @@
+{% comment %}
+  Main Collection Banner - Collection/category header section
+{% endcomment %}
+
+<div class="collection-banner">
+  {% if collection.image %}
+    <div class="collection-banner-image">
+      <img 
+        src="{{ collection.image | image_url: width: 1400 }}" 
+        alt="{{ collection.title }}"
+        class="collection-hero-image"
+      >
+      <div class="collection-banner-overlay"></div>
+    </div>
+  {% else %}
+    <div class="collection-banner-placeholder"></div>
+  {% endif %}
+
+  <div class="collection-banner-content">
+    <h1 class="collection-title">{{ collection.title }}</h1>
+    {% if collection.description %}
+      <div class="collection-description">
+        {{ collection.description }}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .collection-banner {
+    position: relative;
+    min-height: {{ section.settings.banner_height | default: 400 }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .collection-banner-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .collection-hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .collection-banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, {{ section.settings.overlay_opacity | default: 30 | divided_by: 100.0 }});
+    z-index: 2;
+  }
+
+  .collection-banner-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-secondary-light) 100%);
+    z-index: 1;
+  }
+
+  .collection-banner-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    color: white;
+    padding: var(--space-xl);
+    max-width: 100%;
+  }
+
+  .collection-title {
+    font-size: var(--font-size-h1);
+    margin: 0 0 var(--space-lg) 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .collection-description {
+    font-size: var(--font-size-body-lg);
+    max-width: 600px;
+    margin: 0 auto;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    .collection-banner {
+      min-height: 250px;
+    }
+
+    .collection-title {
+      font-size: var(--font-size-h2);
+    }
+
+    .collection-description {
+      font-size: var(--font-size-body-md);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Collection Banner",
+  "settings": [
+    {
+      "type": "range",
+      "id": "banner_height",
+      "min": 200,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "label": "Banner height",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Overlay opacity",
+      "default": 30
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    }
+  ]
+}
+{% endschema %}

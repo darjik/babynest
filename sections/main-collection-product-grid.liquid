@@ -1,0 +1,301 @@
+{% comment %}
+  Main Collection Product Grid - Collection product listing with filters and sorting
+{% endcomment %}
+
+<div class="collection-products-wrapper">
+  <div class="container">
+    <div class="collection-products-content">
+      <!-- Filters Sidebar -->
+      {% if section.settings.show_filters %}
+        <aside class="collection-filters">
+          <h3>Filters</h3>
+          <form id="collection-filter-form">
+            {% if collection.filters.size > 0 %}
+              {% for filter in collection.filters %}
+                <div class="filter-group">
+                  <h4>{{ filter.label }}</h4>
+                  {% case filter.type %}
+                    {% when 'list' %}
+                      {% for value in filter.values %}
+                        <label class="filter-label">
+                          <input type="checkbox" name="{{ filter.param_name }}" value="{{ value.param_name }}"
+                            {% if value.active %}checked{% endif %}>
+                          {{ value.label }}
+                        </label>
+                      {% endfor %}
+                    {% when 'price_range' %}
+                      <input type="range" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value | default: filter.range_min }}" min="{{ filter.range_min }}" max="{{ filter.range_max }}">
+                      <input type="range" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value | default: filter.range_max }}" min="{{ filter.range_min }}" max="{{ filter.range_max }}">
+                  {% endcase %}
+                </div>
+              {% endfor %}
+            {% endif %}
+          </form>
+        </aside>
+      {% endif %}
+
+      <!-- Products Grid -->
+      <div class="collection-products">
+        <!-- Sort Options -->
+        {% if section.settings.show_sorting %}
+          <div class="sort-container">
+            <label for="sort-select">Sort by:</label>
+            <select id="sort-select" name="sort_by">
+              <option value="">Featured</option>
+              <option value="best-selling">Best selling</option>
+              <option value="title-ascending">A to Z</option>
+              <option value="title-descending">Z to A</option>
+              <option value="price-ascending">Price: Low to High</option>
+              <option value="price-descending">Price: High to Low</option>
+              <option value="created-descending">Newest</option>
+            </select>
+          </div>
+        {% endif %}
+
+        <!-- Product Grid -->
+        {% if collection.products.size > 0 %}
+          <div class="products-grid" style="--columns: {{ section.settings.products_per_row }}">
+            {% for product in collection.products limit: section.settings.products_per_page %}
+              <div class="product-card">
+                {% if product.featured_image %}
+                  <div class="product-card-image">
+                    <img 
+                      src="{{ product.featured_image | image_url: width: 400 }}"
+                      alt="{{ product.title }}"
+                      loading="lazy"
+                    >
+                  </div>
+                {% endif %}
+                <div class="product-card-content">
+                  <h3 class="product-card-title">{{ product.title }}</h3>
+                  <div class="product-card-price">
+                    {% if product.compare_at_price %}
+                      <span class="price-original">{{ product.compare_at_price | money }}</span>
+                    {% endif %}
+                    <span class="price-current">{{ product.price | money }}</span>
+                  </div>
+                  <a href="{{ product.url }}" class="button button--secondary button--sm">
+                    View Product
+                  </a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="no-products">
+            <p>No products found</p>
+          </div>
+        {% endif %}
+
+        <!-- Pagination -->
+        {% if collection.products.size > section.settings.products_per_page %}
+          <div class="pagination">
+            <!-- Pagination logic would go here -->
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .collection-products-wrapper {
+    padding: var(--space-xl) 0;
+  }
+
+  .collection-products-content {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: var(--space-xl);
+  }
+
+  .collection-filters {
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+  }
+
+  .collection-filters h3 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-lg);
+  }
+
+  .filter-group {
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .filter-group h4 {
+    font-size: var(--font-size-body-md);
+    margin-bottom: var(--space-md);
+  }
+
+  .filter-label {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--space-sm);
+    cursor: pointer;
+  }
+
+  .filter-label input {
+    margin-right: var(--space-sm);
+  }
+
+  .sort-container {
+    margin-bottom: var(--space-lg);
+    display: flex;
+    gap: var(--space-md);
+    align-items: center;
+  }
+
+  .sort-container select {
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-soft);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--columns, 3), 1fr);
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+  }
+
+  .product-card {
+    background: white;
+    border-radius: var(--radius-soft);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .product-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+  }
+
+  .product-card-image {
+    position: relative;
+    padding-bottom: 100%;
+    overflow: hidden;
+    background: var(--color-background-secondary);
+  }
+
+  .product-card-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-card-content {
+    padding: var(--space-lg);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-card-title {
+    font-size: var(--font-size-body-md);
+    margin: 0 0 var(--space-sm) 0;
+    line-height: var(--line-height-tight);
+  }
+
+  .product-card-price {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+    font-weight: var(--fw-bold);
+  }
+
+  .product-card .button {
+    margin-top: auto;
+  }
+
+  .no-products {
+    text-align: center;
+    padding: var(--space-xl);
+    color: var(--color-text-secondary);
+  }
+
+  @media (max-width: 1024px) {
+    .collection-products-content {
+      grid-template-columns: 1fr;
+    }
+
+    .collection-filters {
+      position: relative;
+      top: auto;
+      max-height: none;
+    }
+
+    .products-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .products-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-md);
+    }
+
+    .product-card-content {
+      padding: var(--space-md);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .products-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .collection-filters {
+      display: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Collection Product Grid",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 6,
+      "max": 50,
+      "step": 6,
+      "label": "Products per page",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Products per row (desktop)",
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Show filters",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sorting",
+      "label": "Show sorting",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

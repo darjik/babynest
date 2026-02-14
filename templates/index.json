@@ -1,0 +1,41 @@
+{
+  "sections": {
+    "hero_banner": {
+      "type": "hero-banner",
+      "settings": {}
+    },
+    "featured_categories": {
+      "type": "featured-categories",
+      "settings": {}
+    },
+    "products_grid": {
+      "type": "products-grid",
+      "settings": {}
+    },
+    "promo_banner": {
+      "type": "promo-banner",
+      "settings": {}
+    },
+    "trust_section": {
+      "type": "trust-section",
+      "settings": {}
+    },
+    "social_gallery": {
+      "type": "social-gallery",
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero_banner",
+    "featured_categories",
+    "products_grid",
+    "promo_banner",
+    "trust_section",
+    "social_gallery",
+    "newsletter"
+  ]
+}
