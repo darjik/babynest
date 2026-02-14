@@ -1,7 +1,6 @@
 [
   {
-    "name": "theme_settings",
-    "theme": true,
+    "name": "Theme Settings",
     "settings": [
       {
         "type": "image_picker",
@@ -32,11 +31,6 @@
       {
         "type": "header",
         "content": "Header Settings"
-      },
-      {
-        "type": "image_picker",
-        "id": "logo",
-        "label": "Header Logo"
       },
       {
         "type": "link_list",
