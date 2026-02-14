@@ -1,5 +1,293 @@
 # Project: Kids Apparel Shopify Store
 
+# 🛠️ SHOPIFY LIQUID SYNTAX GUIDELINES
+
+---
+
+## Critical Liquid Rules (DO NOT IGNORE)
+
+### 1. Snippet & Section Rendering
+
+**CORRECT - Use `render` for snippets:**
+```liquid
+{%- render 'cart-drawer' -%}
+{%- render 'header' -%}
+{%- render 'footer' -%}
+```
+
+**INCORRECT - Do NOT use `include`:**
+```liquid
+{% include 'cart-drawer' %}        ❌ WRONG - This breaks Shopify
+{% include 'header' %}              ❌ WRONG
+```
+
+**Why?**
+- `render` is the modern Shopify standard
+- `render` properly scopes variables
+- `render` integrates with Shopify's asset system
+- Whitespace control `-` prevents extra spaces in output
+
+### 2. Asset Linking (CSS/JS)
+
+**CORRECT:**
+```liquid
+{{ 'design-tokens.css' | asset_url | stylesheet_tag }}
+{{ 'constants.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
+```
+
+**INCORRECT:**
+```liquid
+<link rel="stylesheet" href="/assets/design-tokens.css">     ❌
+<script src="/assets/constants.js"></script>                ❌
+```
+
+### 3. Inline Assets (SVGs, Icons)
+
+**CORRECT:**
+```liquid
+{{ 'icon-close.svg' | inline_asset_content }}
+```
+
+This directly includes SVG content from assets folder.
+
+### 4. Script Tag Structure
+
+**CORRECT:**
+```liquid
+<script>
+  window.shopUrl = '{{ request.origin }}';
+  window.routes = {
+    cart_url: '{{ routes.cart_url }}',
+  };
+</script>
+
+<script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
+```
+
+**INCORRECT:**
+```liquid
+{{ shop.script_tag_attribute }} type="text/javascript">    ❌
+  // content
+</script>
+```
+
+### 5. Liquid Comments in Production
+
+**CORRECT:**
+```liquid
+{% comment %}
+  Renders cart drawer
+  Usage: {% render 'cart-drawer' %}
+{% endcomment %}
+```
+
+These comments are stripped before delivery to browser.
+
+### 6. Whitespace Control (Important!)
+
+**Use whitespace stripping for clean output:**
+```liquid
+{%- render 'cart-drawer' -%}    ✔ No extra whitespace
+{% render 'cart-drawer' %}       ✔ Some whitespace (acceptable for clarity)
+```
+
+The `-` character removes whitespace:
+- `{%-` = remove space before
+- `-%}` = remove space after
+
+### 7. Conditional Rendering
+
+**CORRECT:**
+```liquid
+{%- if settings.cart_type == 'drawer' -%}
+  {%- render 'cart-drawer' -%}
+{%- endif -%}
+
+{%- if cart == empty -%}
+  <p>Your cart is empty</p>
+{%- endif -%}
+```
+
+### 8. Settings & Global Objects
+
+**CORRECT:**
+```liquid
+{% if settings.favicon != blank %}
+  <link rel="icon" href="{{ settings.favicon | image_url: width: 32 }}">
+{% endif %}
+
+{{ shop.name }}
+{{ request.locale.iso_code }}
+{{ canonical_url }}
+{{ routes.cart_url }}
+```
+
+### 9. File Structure Rules
+
+**Layout files (`layout/theme.liquid`):**
+- Use `render` for snippets: `{%- render 'header' -%}`
+- Use sections groups: `{% sections 'header-group' %}`
+- Load CSS/JS properly with `asset_url`
+- One `{{ content_for_layout }}` for page content
+
+**Section files (`sections/*.liquid`):**
+- Must include `{% schema %}` block at end
+- Can have settings, presets, default content
+- Called via `{% sections 'group-name' %}`
+
+**Snippet files (`snippets/*.liquid`):**
+- No schema block needed
+- Rendered via `{%- render 'snippet-name' -%}`
+- Can accept parameters: `{% render 'product-card', product: product %}`
+- Keep self-contained (include CSS & JS inline)
+
+**Template files (`templates/*.liquid`):**
+- Use sections and snippets for components
+- Access page-specific objects: `{{ page.title }}`
+- Use proper template-specific logic
+
+### 10. Mobile Menu & Interaction Patterns
+
+**CORRECT - Use data attributes for JS hooks:**
+```liquid
+<button data-menu-toggle aria-expanded="false">Menu</button>
+<nav data-mobile-menu aria-hidden="true">
+  <!-- content -->
+</nav>
+
+<script>
+  document.querySelector('[data-menu-toggle]').addEventListener('click', function() {
+    this.setAttribute('aria-expanded', 
+      this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+  });
+</script>
+```
+
+### 11. Accessibility in Liquid
+
+**CORRECT:**
+```liquid
+<a href="{{ product.url }}" class="product-link">
+  {{ product.title }}
+</a>
+
+<button aria-label="Close cart">×</button>
+
+{% if product.available %}
+  <span aria-label="In stock">Available</span>
+{% endif %}
+```
+
+### 12. Common Liquid Filters (Use These!)
+
+```liquid
+{{ product.title | capitalize }}
+{{ price | money }}
+{{ text | strip_html | truncatewords: 20 }}
+{{ image | image_url: width: 200 }}
+{{ collection.products | where: 'available', true }}
+{{ date | date: '%B %d, %Y' }}
+{{ settings.logo | image_url: width: 200, height: 200 }}
+```
+
+### 13. Loop Patterns
+
+**CORRECT:**
+```liquid
+{% for product in collection.products limit: 12 %}
+  <div class="product-card">
+    <img src="{{ product.featured_image | image_url: width: 300 }}" alt="{{ product.title }}">
+    <h3>{{ product.title }}</h3>
+  </div>
+  
+  {% if forloop.last %}
+    <p>Last product shown</p>
+  {% endif %}
+{% endfor %}
+```
+
+### 14. Settings Schema (Required for sections)
+
+**CORRECT:**
+```liquid
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    }
+  ]
+}
+{% endschema %}
+```
+
+Snippets DO NOT need schema blocks.
+
+---
+
+## File Layout Template (Copy This!)
+
+**layout/theme.liquid:**
+```liquid
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  {%- if settings.favicon -%}
+    <link rel="icon" href="{{ settings.favicon | image_url: width: 32 }}">
+  {%- endif -%}
+  
+  {{ 'design-tokens.css' | asset_url | stylesheet_tag }}
+  {{ content_for_header }}
+</head>
+
+<body>
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+  
+  {%- render 'header' -%}
+  {%- render 'cart-drawer' -%}
+  
+  <main id="main-content" role="main">
+    {{ content_for_layout }}
+  </main>
+  
+  {%- render 'footer' -%}
+  
+  <script src="{{ 'constants.js' | asset_url }}" defer></script>
+  <script src="{{ 'global.js' | asset_url }}" defer></script>
+</body>
+</html>
+```
+
+---
+
+## Common Mistakes to Avoid
+
+1. ❌ Using `{% include %}` instead of `{% render %}`
+2. ❌ Linking assets without `asset_url` filter
+3. ❌ Missing `schema` block in sections
+4. ❌ Adding `schema` block to snippets
+5. ❌ Not stripping whitespace with `-`
+6. ❌ Using hardcoded `/assets/` paths
+7. ❌ Missing `defer` on script tags
+8. ❌ Not using proper Shopify objects (like `routes.cart_url`)
+9. ❌ Forgetting `{{ content_for_layout }}` in main layout
+10. ❌ Not using data attributes for JS hooks
+
+---
+
 # 🎨 DESIGN SYSTEM & UI GUIDELINES
 
 ---
