@@ -1,0 +1,299 @@
+{% comment %}
+  Newsletter Signup Section - BabyNest Kids Apparel Store
+  Email capture form for marketing campaigns
+  Production-ready with validation and accessibility
+{% endcomment %}
+
+<section class="newsletter-section">
+  <div class="container">
+    <div class="newsletter-wrapper">
+      <div class="newsletter-content">
+        {% if section.settings.newsletter_title %}
+          <h2 class="newsletter-title">{{ section.settings.newsletter_title }}</h2>
+        {% endif %}
+
+        {% if section.settings.newsletter_description %}
+          <p class="newsletter-description">{{ section.settings.newsletter_description }}</p>
+        {% endif %}
+      </div>
+
+      <form class="newsletter-form" method="post" action="/contact" novalidate>
+        <input type="hidden" name="form_type" value="customer">
+        <input type="hidden" name="utf8" value="✓">
+        
+        <div class="newsletter-form__group">
+          <input
+            type="email"
+            name="contact[email]"
+            id="newsletter-email"
+            class="newsletter-form__input"
+            placeholder="Enter your email address"
+            required
+            aria-label="Email address"
+            autocomplete="email"
+          >
+          <button 
+            type="submit"
+            class="newsletter-form__button button button--primary"
+            aria-label="Subscribe to our newsletter"
+          >
+            {% if section.settings.button_text %}
+              {{ section.settings.button_text }}
+            {% else %}
+              Subscribe
+            {% endif %}
+          </button>
+        </div>
+
+        <p class="newsletter-form__notice">
+          {% if section.settings.privacy_notice %}
+            {{ section.settings.privacy_notice }}
+          {% else %}
+            We respect your privacy. Unsubscribe at any time.
+          {% endif %}
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  .newsletter-section {
+    padding: var(--space-xxl) 0;
+    background: linear-gradient(135deg, var(--color-primary-light), var(--color-secondary-light));
+  }
+
+  .newsletter-wrapper {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .newsletter-content {
+    margin-bottom: var(--space-xl);
+  }
+
+  .newsletter-title {
+    font-size: var(--font-size-h2);
+    font-weight: var(--fw-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-md);
+  }
+
+  .newsletter-description {
+    font-size: var(--font-size-body-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-body);
+    margin: 0;
+  }
+
+  .newsletter-form__group {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+
+  .newsletter-form__input {
+    flex: 1;
+    min-width: 0;
+    height: var(--input-height);
+    padding: var(--input-padding);
+    font-size: var(--font-size-body-md);
+    font-family: var(--font-primary);
+    color: var(--color-text-primary);
+    background-color: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-soft);
+    transition: border-color var(--transition-base) var(--transition-timing),
+      box-shadow var(--transition-base) var(--transition-timing);
+  }
+
+  .newsletter-form__input::placeholder {
+    color: var(--color-text-tertiary);
+  }
+
+  .newsletter-form__input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(250, 173, 221, 0.1);
+  }
+
+  .newsletter-form__input:invalid {
+    border-color: var(--color-sale);
+  }
+
+  .newsletter-form__button {
+    height: var(--button-height-md);
+    padding: 0 var(--space-xl);
+    white-space: nowrap;
+    transition: all var(--transition-base) var(--transition-timing);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .newsletter-form__button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .newsletter-form__button:active {
+    transform: translateY(0);
+  }
+
+  .newsletter-form__notice {
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .newsletter-section {
+      padding: var(--space-xl) 0;
+    }
+
+    .newsletter-content {
+      margin-bottom: var(--space-lg);
+    }
+
+    .newsletter-title {
+      font-size: var(--font-size-h3);
+    }
+
+    .newsletter-description {
+      font-size: var(--font-size-body-md);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .newsletter-section {
+      padding: var(--space-lg) 0;
+    }
+
+    .newsletter-wrapper {
+      padding: 0 var(--space-md);
+    }
+
+    .newsletter-content {
+      margin-bottom: var(--space-lg);
+    }
+
+    .newsletter-title {
+      font-size: var(--font-size-h4);
+      margin-bottom: var(--space-sm);
+    }
+
+    .newsletter-description {
+      font-size: var(--font-size-body-md);
+    }
+
+    .newsletter-form__group {
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .newsletter-form__input {
+      width: 100%;
+    }
+
+    .newsletter-form__button {
+      width: 100%;
+    }
+
+    .newsletter-form__notice {
+      font-size: var(--font-size-body-xs);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .newsletter-section {
+      padding: var(--space-lg) 0;
+    }
+
+    .newsletter-wrapper {
+      padding: 0 var(--space-sm);
+    }
+
+    .newsletter-title {
+      font-size: var(--font-size-h5);
+    }
+
+    .newsletter-description {
+      font-size: var(--font-size-body-sm);
+    }
+
+    .newsletter-form__input,
+    .newsletter-form__button {
+      font-size: var(--font-size-body-sm);
+      height: 40px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const forms = document.querySelectorAll('.newsletter-form');
+    
+    forms.forEach(form => {
+      const input = form.querySelector('.newsletter-form__input');
+      const button = form.querySelector('.newsletter-form__button');
+      
+      form.addEventListener('submit', function(e) {
+        if (!input.value || !input.checkValidity()) {
+          e.preventDefault();
+          input.focus();
+          input.classList.add('error');
+          return false;
+        }
+      });
+
+      input.addEventListener('change', function() {
+        input.classList.remove('error');
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Newsletter Signup",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Newsletter Settings"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Title",
+      "placeholder": "Subscribe to our newsletter",
+      "default": "Subscribe to our newsletter"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_description",
+      "label": "Description",
+      "placeholder": "Get exclusive offers and parenting tips delivered to your inbox",
+      "default": "Get exclusive offers and parenting tips delivered to your inbox"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "placeholder": "Subscribe",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "privacy_notice",
+      "label": "Privacy Notice",
+      "placeholder": "We respect your privacy. Unsubscribe at any time.",
+      "default": "We respect your privacy. Unsubscribe at any time."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter Signup"
+    }
+  ]
+}
+{% endschema %}

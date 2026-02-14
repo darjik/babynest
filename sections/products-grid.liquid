@@ -1,0 +1,201 @@
+{% comment %}
+  New Arrivals / Featured Products Section - BabyNest
+  Dynamic product grid pulling from collections or manually selected products
+  Production-ready with responsive grid and filters
+{% endcomment %}
+
+<section class="products-grid">
+  <div class="container">
+    {% if section.settings.section_title %}
+      <div class="products-grid__header">
+        <h2 class="products-grid__title">{{ section.settings.section_title }}</h2>
+        {% if section.settings.section_subtitle %}
+          <p class="products-grid__subtitle">{{ section.settings.section_subtitle }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.collection %}
+      <div class="products-grid__grid">
+        {% for product in section.settings.collection.products limit: section.settings.products_per_row %}
+          {% include 'product-card', product: product %}
+        {% endfor %}
+      </div>
+
+      {% if section.settings.show_view_all %}
+        <div class="products-grid__footer">
+          <a 
+            href="{{ section.settings.collection.url }}" 
+            class="button button--outline button--lg"
+          >
+            View All Products
+          </a>
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="products-grid__empty">
+        <p>Please select a collection to display products</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .products-grid {
+    padding: var(--space-xxl) 0;
+    background-color: var(--color-background);
+  }
+
+  .products-grid__header {
+    margin-bottom: var(--space-xxl);
+    text-align: center;
+  }
+
+  .products-grid__title {
+    font-size: var(--font-size-h2);
+    font-weight: var(--fw-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-md);
+  }
+
+  .products-grid__subtitle {
+    font-size: var(--font-size-body-lg);
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .products-grid__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--grid-gap-desktop);
+    margin-bottom: var(--space-xxl);
+  }
+
+  .products-grid__footer {
+    display: flex;
+    justify-content: center;
+  }
+
+  .products-grid__empty {
+    padding: var(--space-xxl) var(--space-lg);
+    text-align: center;
+    background-color: var(--color-background-secondary);
+    border-radius: var(--radius-soft);
+    color: var(--color-text-secondary);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1280px) {
+    .products-grid__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .products-grid {
+      padding: var(--space-xl) 0;
+    }
+
+    .products-grid__header {
+      margin-bottom: var(--space-xl);
+    }
+
+    .products-grid__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--grid-gap-tablet);
+      margin-bottom: var(--space-xl);
+    }
+
+    .products-grid__title {
+      font-size: var(--font-size-h3);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .products-grid {
+      padding: var(--space-lg) 0;
+    }
+
+    .products-grid__header {
+      margin-bottom: var(--space-lg);
+    }
+
+    .products-grid__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--grid-gap-mobile);
+      margin-bottom: var(--space-lg);
+    }
+
+    .products-grid__title {
+      font-size: var(--font-size-h4);
+      margin-bottom: var(--space-sm);
+    }
+
+    .products-grid__subtitle {
+      font-size: var(--font-size-body-md);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .products-grid__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .products-grid__title {
+      font-size: var(--font-size-h5);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Products Grid",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "placeholder": "New Arrivals",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "textarea",
+      "id": "section_subtitle",
+      "label": "Section Subtitle",
+      "placeholder": "Discover our latest collection"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "label": "Products Per Row",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show View All Button",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Products Grid"
+    }
+  ]
+}
+{% endschema %}

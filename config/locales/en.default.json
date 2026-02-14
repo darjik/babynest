@@ -1,0 +1,28 @@
+{
+  "general": {
+    "meta": {
+      "tags": "tagged",
+      "page": "page",
+      "currency": "currency"
+    }
+  },
+  "header": {
+    "menu": "Menu",
+    "search": "Search",
+    "account": "Account",
+    "cart": "Cart"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "checkout": "Checkout",
+    "continue_shopping": "Continue Shopping"
+  },
+  "products": {
+    "add_to_cart": "Add to Cart",
+    "quick_add": "Quick Add",
+    "sold_out": "Sold Out",
+    "on_sale": "On Sale",
+    "new": "New"
+  }
+}

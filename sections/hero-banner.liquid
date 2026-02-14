@@ -1,0 +1,380 @@
+{% comment %}
+  Hero Banner Section - BabyNest Kids Apparel Store
+  Full-width responsive banner with overlay text and CTA
+  Supports multiple images with automatic rotation
+  Production-ready with image optimization and accessibility
+{% endcomment %}
+
+<section class="hero-banner" data-hero-banner>
+  <div class="hero-banner__image-container" data-image-container>
+    {% if section.settings.image %}
+      <div class="hero-banner__image" style="background-image: url('{{ section.settings.image | image_url: width: 1920 }}')"></div>
+    {% endif %}
+    {% for block in section.blocks %}
+      {% if block.settings.banner_image %}
+        <div class="hero-banner__image" style="background-image: url('{{ block.settings.banner_image | image_url: width: 1920 }}')"></div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  
+  <div class="hero-banner__overlay" style="background-color: rgba(0, 0, 0, {{ section.settings.overlay_opacity | times: 0.01 }})"></div>
+  
+  <div class="hero-banner__content">
+    <div class="container">
+      <div class="hero-banner__inner text-{% if section.settings.text_alignment %}{{ section.settings.text_alignment }}{% else %}center{% endif %}">
+        
+        {% if section.settings.heading %}
+          <h1 class="hero-banner__heading animate-slide-up">
+            {{ section.settings.heading }}
+          </h1>
+        {% endif %}
+
+        {% if section.settings.subtext %}
+          <p class="hero-banner__subtext animate-slide-up" style="animation-delay: 100ms;">
+            {{ section.settings.subtext }}
+          </p>
+        {% endif %}
+
+        {% if section.settings.cta_label and section.settings.cta_link %}
+          <div class="hero-banner__cta" style="animation-delay: 200ms;">
+            <a 
+              href="{{ section.settings.cta_link }}" 
+              class="button button--primary button--lg"
+              aria-label="{{ section.settings.cta_label }}"
+            >
+              {{ section.settings.cta_label }}
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-banner {
+    position: relative;
+    width: 100%;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-banner__image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-banner__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+
+  .hero-banner__image--active {
+    opacity: 1;
+  }
+
+  .hero-banner__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: background-color var(--transition-base) var(--transition-timing);
+    z-index: 1;
+  }
+
+  .hero-banner__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+  }
+
+  .hero-banner__inner {
+    padding: var(--space-xxl) var(--space-lg);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero-banner__heading {
+    font-size: var(--font-size-h1);
+    font-weight: var(--fw-bold);
+    line-height: var(--line-height-h1);
+    color: #FFFFFF;
+    margin-bottom: var(--space-lg);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    letter-spacing: var(--letter-spacing-tight);
+  }
+
+  .hero-banner__subtext {
+    font-size: var(--font-size-body-lg);
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: var(--space-xl);
+    line-height: var(--line-height-body);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-banner__cta {
+    animation: slideUp var(--transition-slow) var(--transition-timing);
+  }
+
+  .hero-banner__cta .button {
+    transition: all var(--transition-base) var(--transition-timing);
+    box-shadow: 0 4px 12px rgba(250, 173, 221, 0.2);
+  }
+
+  .hero-banner__cta .button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(250, 173, 221, 0.3);
+  }
+
+  .hero-banner__cta .button:active {
+    transform: translateY(0);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .hero-banner {
+      min-height: 500px;
+    }
+
+    .hero-banner__heading {
+      font-size: var(--font-size-h2);
+    }
+
+    .hero-banner__subtext {
+      font-size: var(--font-size-body-md);
+    }
+
+    .hero-banner__inner {
+      padding: var(--space-xl) var(--space-lg);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-banner {
+      min-height: 400px;
+    }
+
+    .hero-banner__heading {
+      font-size: var(--font-size-h3);
+      margin-bottom: var(--space-md);
+    }
+
+    .hero-banner__subtext {
+      font-size: var(--font-size-body-md);
+      margin-bottom: var(--space-lg);
+    }
+
+    .hero-banner__inner {
+      padding: var(--space-lg) var(--space-md);
+    }
+
+    .hero-banner__cta .button {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-banner {
+      min-height: 350px;
+    }
+
+    .hero-banner__heading {
+      font-size: var(--font-size-h4);
+    }
+
+    .hero-banner__subtext {
+      font-size: var(--font-size-body-sm);
+      margin-bottom: var(--space-md);
+    }
+
+    .hero-banner__inner {
+      padding: var(--space-lg) var(--space-sm);
+    }
+  }
+
+  /* Animations */
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slide-up {
+    animation: slideUp var(--transition-slow) var(--transition-timing);
+  }
+
+  .text-left {
+    text-align: left;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .text-right {
+    text-align: right;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero Banner Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Primary Background Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "placeholder": "Welcome to BabyNest",
+      "default": "Welcome to BabyNest"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "placeholder": "Premium kids apparel for your little ones",
+      "default": "Premium kids apparel for your little ones"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA Button Label",
+      "placeholder": "Shop Now",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Button Link"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay Opacity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "rotation_interval",
+      "label": "Image Rotation Interval (seconds)",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner_image",
+      "name": "Banner Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "banner_image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner"
+    }
+  ]
+}
+{% endschema %}
+
+<script>
+  (function() {
+    const heroBanner = document.querySelector('[data-hero-banner]');
+    if (!heroBanner) return;
+
+    const imageContainer = heroBanner.querySelector('[data-image-container]');
+    const images = imageContainer.querySelectorAll('.hero-banner__image');
+    
+    if (images.length === 0) return;
+
+    let currentImageIndex = 0;
+    const rotationInterval = {{ section.settings.rotation_interval | default: 5 }} * 1000;
+
+    // Set first image as active
+    images[0].classList.add('hero-banner__image--active');
+
+    // Rotate images
+    function rotateImages() {
+      // Remove active class from current image
+      images[currentImageIndex].classList.remove('hero-banner__image--active');
+
+      // Move to next image
+      currentImageIndex = (currentImageIndex + 1) % images.length;
+
+      // Add active class to new image
+      images[currentImageIndex].classList.add('hero-banner__image--active');
+    }
+
+    // Start rotation if more than one image exists
+    if (images.length > 1) {
+      setInterval(rotateImages, rotationInterval);
+    }
+  })();
+</script>

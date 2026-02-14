@@ -1,0 +1,345 @@
+{% comment %}
+  Product Card Snippet - BabyNest Kids Apparel Store
+  Reusable component for displaying products in grids
+  Includes badges, pricing, and quick add functionality
+{% endcomment %}
+
+<div class="product-card">
+  <a href="{{ product.url }}" class="product-card__link">
+    <div class="product-card__image-wrapper">
+      {% if product.featured_image %}
+        <img 
+          src="{{ product.featured_image | image_url: width: 300 }}"
+          alt="{{ product.featured_image.alt | escape }}"
+          class="product-card__image product-card__image--primary"
+          loading="lazy"
+        >
+        {% if product.images.size > 1 %}
+          <img 
+            src="{{ product.images[1] | image_url: width: 300 }}"
+            alt="{{ product.images[1].alt | escape }}"
+            class="product-card__image product-card__image--secondary"
+            loading="lazy"
+          >
+        {% endif %}
+      {% else %}
+        <div class="product-card__image-placeholder">
+          <svg viewBox="0 0 300 300" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="20" y="50" width="260" height="200" rx="8"></rect>
+            <path d="M 100 150 L 150 80 L 200 150"></path>
+            <circle cx="180" cy="100" r="12"></circle>
+          </svg>
+        </div>
+      {% endif %}
+
+      {% if product.compare_at_price %}
+        <div class="product-card__badge product-card__badge--sale">Sale</div>
+      {% endif %}
+      {% if product.metafields.custom.is_new == 'true' %}
+        <div class="product-card__badge product-card__badge--new">New</div>
+      {% endif %}
+      {% if product.available == false %}
+        <div class="product-card__badge product-card__badge--sold-out">Sold Out</div>
+      {% endif %}
+    </div>
+  </a>
+
+  <div class="product-card__content">
+    <h3 class="product-card__name">
+      <a href="{{ product.url }}" class="product-card__name-link">
+        {{ product.title }}
+      </a>
+    </h3>
+
+    <div class="product-card__price-wrapper">
+      {% if product.compare_at_price %}
+        <span class="product-card__price-original">
+          {{ product.compare_at_price | money }}
+        </span>
+      {% endif %}
+      <span class="product-card__price {% if product.compare_at_price %}product-card__price--sale{% endif %}">
+        {{ product.price | money }}
+      </span>
+    </div>
+
+    {% if product.rating %}
+      <div class="product-card__rating">
+        <div class="product-card__stars" aria-label="{{ product.rating }} out of 5 stars">
+          {% for i in (1..5) %}
+            {% if i <= product.rating %}
+              <span class="star star--filled">★</span>
+            {% else %}
+              <span class="star">☆</span>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <span class="product-card__review-count">({{ product.reviews_count }})</span>
+      </div>
+    {% endif %}
+
+    {% if product.available %}
+      <button 
+        class="button button--primary button--full-width product-card__add-btn"
+        data-product-id="{{ product.id }}"
+        data-product-title="{{ product.title | escape }}"
+        aria-label="Add {{ product.title }} to cart"
+      >
+        Add to Cart
+      </button>
+    {% else %}
+      <button 
+        class="button button--outline button--full-width product-card__add-btn"
+        disabled
+        aria-label="Out of stock"
+      >
+        Out of Stock
+      </button>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--color-background);
+    border-radius: var(--radius-soft);
+    overflow: hidden;
+    transition: all var(--transition-base) var(--transition-timing);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .product-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+
+  .product-card__link {
+    text-decoration: none;
+    display: block;
+  }
+
+  .product-card__image-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 125%;
+    overflow: hidden;
+    background-color: var(--color-background-secondary);
+  }
+
+  .product-card__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all var(--transition-base) var(--transition-timing);
+  }
+
+  .product-card__image--primary {
+    opacity: 1;
+  }
+
+  .product-card__image--secondary {
+    opacity: 0;
+  }
+
+  .product-card:hover .product-card__image--primary {
+    opacity: 0;
+  }
+
+  .product-card:hover .product-card__image--secondary {
+    opacity: 1;
+  }
+
+  .product-card__image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-background-secondary);
+    color: var(--color-text-tertiary);
+  }
+
+  .product-card__image-placeholder svg {
+    width: 60%;
+    height: 60%;
+  }
+
+  .product-card__badge {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-body-xs);
+    font-weight: var(--fw-bold);
+    border-radius: var(--radius-pill);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-wide);
+    z-index: 10;
+    animation: slideDown var(--transition-base) var(--transition-timing);
+  }
+
+  .product-card__badge--sale {
+    background-color: var(--color-sale);
+    color: #FFFFFF;
+  }
+
+  .product-card__badge--new {
+    background-color: var(--color-secondary);
+    color: var(--color-text-primary);
+  }
+
+  .product-card__badge--sold-out {
+    background-color: var(--color-text-secondary);
+    color: #FFFFFF;
+  }
+
+  .product-card__content {
+    flex: 1;
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-card__name {
+    font-size: var(--font-size-body-md);
+    font-weight: var(--fw-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-sm);
+    line-height: 1.4;
+  }
+
+  .product-card__name-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--transition-base) var(--transition-timing);
+  }
+
+  .product-card__name-link:hover {
+    color: var(--color-primary);
+  }
+
+  .product-card__price-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+
+  .product-card__price {
+    font-size: var(--font-size-body-lg);
+    font-weight: var(--fw-bold);
+    color: var(--color-text-primary);
+  }
+
+  .product-card__price--sale {
+    color: var(--color-sale);
+  }
+
+  .product-card__price-original {
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-secondary);
+    text-decoration: line-through;
+  }
+
+  .product-card__rating {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+
+  .product-card__stars {
+    display: flex;
+    gap: 2px;
+  }
+
+  .star {
+    font-size: 14px;
+    color: #FFB800;
+  }
+
+  .star--filled {
+    color: #FFB800;
+  }
+
+  .product-card__review-count {
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .product-card__add-btn {
+    margin-top: auto;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all var(--transition-base) var(--transition-timing);
+  }
+
+  .product-card:hover .product-card__add-btn {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Mobile: Always show button */
+  @media (max-width: 768px) {
+    .product-card__add-btn {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Accessibility */
+  .product-card:focus-within {
+    box-shadow: 0 0 0 3px rgba(250, 173, 221, 0.2);
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('.product-card__add-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const productId = this.dataset.productId;
+      const productTitle = this.dataset.productTitle;
+      
+      // Add to cart functionality
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          items: [{
+            id: productId,
+            quantity: 1
+          }]
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Show success message
+        this.textContent = 'Added!';
+        this.classList.add('product-card__add-btn--success');
+        setTimeout(() => {
+          this.textContent = 'Add to Cart';
+          this.classList.remove('product-card__add-btn--success');
+        }, 2000);
+      })
+      .catch(error => console.error('Error:', error));
+    });
+  });
+</script>

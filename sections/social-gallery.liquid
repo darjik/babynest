@@ -1,0 +1,320 @@
+{% comment %}
+  Instagram / Social Gallery Section - BabyNest Kids Apparel Store
+  Displays user-generated content or curated social media gallery
+  Production-ready with responsive grid and accessibility
+{% endcomment %}
+
+<section class="social-gallery">
+  <div class="container">
+    {% if section.settings.section_title %}
+      <div class="social-gallery__header">
+        <h2 class="social-gallery__title">{{ section.settings.section_title }}</h2>
+        {% if section.settings.section_subtitle %}
+          <p class="social-gallery__subtitle">{{ section.settings.section_subtitle }}</p>
+        {% endif %}
+        {% if section.settings.instagram_handle %}
+          <a 
+            href="https://instagram.com/{{ section.settings.instagram_handle | escape }}"
+            class="button button--outline social-gallery__cta"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow us on Instagram"
+          >
+            Follow @{{ section.settings.instagram_handle }}
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="social-gallery__grid">
+      {% for block in section.blocks %}
+        <a 
+          href="{{ block.settings.image_link }}" 
+          class="social-gallery__item"
+          aria-label="Gallery image"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {% if block.settings.image %}
+            <img 
+              src="{{ block.settings.image | image_url: width: 300 }}"
+              alt="{{ block.settings.alt_text | escape }}"
+              class="social-gallery__image"
+              loading="lazy"
+            >
+          {% else %}
+            <div class="social-gallery__placeholder">
+              <svg viewBox="0 0 300 300" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="20" y="20" width="260" height="260" rx="8"></rect>
+                <rect x="50" y="50" width="200" height="200" rx="4"></rect>
+                <circle cx="150" cy="140" r="30"></circle>
+                <circle cx="220" cy="80" r="8"></circle>
+              </svg>
+            </div>
+          {% endif %}
+
+          {% if block.settings.show_icon %}
+            <div class="social-gallery__overlay">
+              <svg class="social-gallery__icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5m-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11m3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"></path>
+              </svg>
+            </div>
+          {% endif %}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .social-gallery {
+    padding: var(--space-xxl) 0;
+    background-color: var(--color-background);
+  }
+
+  .social-gallery__header {
+    margin-bottom: var(--space-xxl);
+    text-align: center;
+  }
+
+  .social-gallery__title {
+    font-size: var(--font-size-h2);
+    font-weight: var(--fw-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-md);
+  }
+
+  .social-gallery__subtitle {
+    font-size: var(--font-size-body-lg);
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: var(--space-lg);
+  }
+
+  .social-gallery__cta {
+    margin: 0 auto;
+    display: block;
+    width: fit-content;
+  }
+
+  .social-gallery__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--grid-gap-desktop);
+  }
+
+  .social-gallery__item {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-soft);
+    display: block;
+    text-decoration: none;
+    transition: all var(--transition-base) var(--transition-timing);
+    aspect-ratio: 1 / 1;
+  }
+
+  .social-gallery__item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .social-gallery__item:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+  }
+
+  .social-gallery__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-base) var(--transition-timing);
+  }
+
+  .social-gallery__item:hover .social-gallery__image {
+    transform: scale(1.05);
+  }
+
+  .social-gallery__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--color-primary-light), var(--color-secondary-light));
+    color: var(--color-primary);
+  }
+
+  .social-gallery__placeholder svg {
+    width: 60%;
+    height: 60%;
+  }
+
+  .social-gallery__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--transition-base) var(--transition-timing);
+  }
+
+  .social-gallery__item:hover .social-gallery__overlay {
+    opacity: 1;
+  }
+
+  .social-gallery__icon {
+    width: 48px;
+    height: 48px;
+    color: #FFFFFF;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .social-gallery {
+      padding: var(--space-xl) 0;
+    }
+
+    .social-gallery__header {
+      margin-bottom: var(--space-xl);
+    }
+
+    .social-gallery__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--grid-gap-tablet);
+    }
+
+    .social-gallery__title {
+      font-size: var(--font-size-h3);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .social-gallery {
+      padding: var(--space-lg) 0;
+    }
+
+    .social-gallery__header {
+      margin-bottom: var(--space-lg);
+    }
+
+    .social-gallery__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--grid-gap-mobile);
+    }
+
+    .social-gallery__title {
+      font-size: var(--font-size-h4);
+      margin-bottom: var(--space-sm);
+    }
+
+    .social-gallery__subtitle {
+      font-size: var(--font-size-body-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .social-gallery__icon {
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .social-gallery {
+      padding: var(--space-lg) 0;
+    }
+
+    .social-gallery__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .social-gallery__title {
+      font-size: var(--font-size-h5);
+    }
+
+    .social-gallery__subtitle {
+      font-size: var(--font-size-body-sm);
+    }
+
+    .social-gallery__icon {
+      width: 28px;
+      height: 28px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Instagram / Social Gallery",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "placeholder": "Follow Us On Instagram",
+      "default": "Follow Us On Instagram"
+    },
+    {
+      "type": "textarea",
+      "id": "section_subtitle",
+      "label": "Section Subtitle",
+      "placeholder": "Join our community and see what parents love"
+    },
+    {
+      "type": "text",
+      "id": "instagram_handle",
+      "label": "Instagram Handle",
+      "placeholder": "babynest_official"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Gallery Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Alt Text",
+          "placeholder": "Describe the image"
+        },
+        {
+          "type": "url",
+          "id": "image_link",
+          "label": "Link URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Show Overlay Icon",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram / Social Gallery"
+    }
+  ]
+}
+{% endschema %}

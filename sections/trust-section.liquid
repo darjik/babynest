@@ -1,0 +1,322 @@
+{% comment %}
+  Trust & Value Proposition Section - BabyNest Kids Apparel Store
+  Displays key brand values with icons and descriptions
+  Production-ready with responsive grid and accessibility
+{% endcomment %}
+
+<section class="trust-section">
+  <div class="container">
+    {% if section.settings.section_title %}
+      <div class="trust-section__header">
+        <h2 class="trust-section__title">{{ section.settings.section_title }}</h2>
+        {% if section.settings.section_subtitle %}
+          <p class="trust-section__subtitle">{{ section.settings.section_subtitle }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="trust-section__grid">
+      {% for block in section.blocks %}
+        <div class="trust-card">
+          {% if block.settings.icon %}
+            <div class="trust-card__icon-wrapper">
+              <img 
+                src="{{ block.settings.icon | image_url: width: 100 }}"
+                alt=""
+                class="trust-card__icon"
+                loading="lazy"
+              >
+            </div>
+          {% else %}
+            <div class="trust-card__icon-placeholder">
+              <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="10" y="10" width="80" height="80" rx="8"></rect>
+              </svg>
+            </div>
+          {% endif %}
+
+          <h3 class="trust-card__title">{{ block.settings.title }}</h3>
+          <p class="trust-card__description">{{ block.settings.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .trust-section {
+    padding: var(--space-xxl) 0;
+    background-color: var(--color-background-secondary);
+  }
+
+  .trust-section__header {
+    margin-bottom: var(--space-xxl);
+    text-align: center;
+  }
+
+  .trust-section__title {
+    font-size: var(--font-size-h2);
+    font-weight: var(--fw-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-md);
+  }
+
+  .trust-section__subtitle {
+    font-size: var(--font-size-body-lg);
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .trust-section__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--grid-gap-desktop);
+  }
+
+  .trust-card {
+    text-align: center;
+    padding: var(--space-lg);
+    border-radius: var(--radius-soft);
+    background-color: var(--color-background);
+    transition: all var(--transition-base) var(--transition-timing);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .trust-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .trust-card__icon-wrapper {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto var(--space-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-primary-light), var(--color-secondary-light));
+    border-radius: var(--radius-md);
+  }
+
+  .trust-card__icon {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+  }
+
+  .trust-card__icon-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto var(--space-lg);
+    background: linear-gradient(135deg, var(--color-primary-light), var(--color-secondary-light));
+    border-radius: var(--radius-md);
+    color: var(--color-primary);
+  }
+
+  .trust-card__icon-placeholder svg {
+    width: 60%;
+    height: 60%;
+  }
+
+  .trust-card__title {
+    font-size: var(--font-size-body-lg);
+    font-weight: var(--fw-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-md);
+  }
+
+  .trust-card__description {
+    font-size: var(--font-size-body-md);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-body);
+    margin: 0;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .trust-section {
+      padding: var(--space-xl) 0;
+    }
+
+    .trust-section__header {
+      margin-bottom: var(--space-xl);
+    }
+
+    .trust-section__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--grid-gap-tablet);
+    }
+
+    .trust-section__title {
+      font-size: var(--font-size-h3);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .trust-section {
+      padding: var(--space-lg) 0;
+    }
+
+    .trust-section__header {
+      margin-bottom: var(--space-lg);
+    }
+
+    .trust-section__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--grid-gap-mobile);
+    }
+
+    .trust-section__title {
+      font-size: var(--font-size-h4);
+      margin-bottom: var(--space-sm);
+    }
+
+    .trust-section__subtitle {
+      font-size: var(--font-size-body-md);
+    }
+
+    .trust-card {
+      padding: var(--space-md);
+    }
+
+    .trust-card__icon-wrapper,
+    .trust-card__icon-placeholder {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto var(--space-md);
+    }
+
+    .trust-card__title {
+      font-size: var(--font-size-body-md);
+      margin-bottom: var(--space-sm);
+    }
+
+    .trust-card__description {
+      font-size: var(--font-size-body-sm);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .trust-section {
+      padding: var(--space-lg) 0;
+    }
+
+    .trust-section__grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .trust-section__title {
+      font-size: var(--font-size-h5);
+    }
+
+    .trust-card {
+      padding: var(--space-md);
+    }
+
+    .trust-card__icon-wrapper,
+    .trust-card__icon-placeholder {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto var(--space-sm);
+    }
+
+    .trust-card__title {
+      font-size: var(--font-size-body-sm);
+    }
+
+    .trust-card__description {
+      font-size: var(--font-size-body-xs);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Trust & Value Proposition",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "placeholder": "Why Choose BabyNest",
+      "default": "Why Choose BabyNest"
+    },
+    {
+      "type": "textarea",
+      "id": "section_subtitle",
+      "label": "Section Subtitle",
+      "placeholder": "We care about your little ones"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value Proposition",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "placeholder": "Premium Quality"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "placeholder": "Our apparel is made from the finest materials"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust & Value Proposition",
+      "blocks": [
+        {
+          "type": "value",
+          "settings": {
+            "title": "Premium Quality",
+            "description": "Carefully selected fabrics for comfort and durability"
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "title": "Baby Safe",
+            "description": "All materials are hypoallergenic and skin-friendly"
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "title": "Easy Returns",
+            "description": "30-day hassle-free return policy"
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "title": "Fast Delivery",
+            "description": "Quick shipping across the country"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

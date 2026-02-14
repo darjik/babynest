@@ -1,0 +1,334 @@
+{% comment %}
+  Promotional Banner Section - BabyNest Kids Apparel Store
+  Full-width promotional banner for campaigns and seasonal offers
+  Production-ready with responsive design and accessibility
+{% endcomment %}
+
+<section class="promo-banner">
+  <div class="container">
+    <div class="promo-banner__wrapper">
+      {% if section.settings.use_image %}
+        <div class="promo-banner__image-container">
+          {% if section.settings.promo_image %}
+            <img 
+              src="{{ section.settings.promo_image | image_url: width: 1200 }}"
+              alt="{{ section.settings.promo_title | escape }}"
+              class="promo-banner__image"
+              loading="lazy"
+            >
+          {% else %}
+            <div class="promo-banner__image-placeholder">
+              <svg viewBox="0 0 1200 300" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="20" y="20" width="1160" height="260" rx="8"></rect>
+              </svg>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="promo-banner__content {% if section.settings.use_image %}promo-banner__content--overlay{% endif %}">
+        <div class="promo-banner__inner">
+          {% if section.settings.badge_text %}
+            <div class="promo-banner__badge">
+              {{ section.settings.badge_text }}
+            </div>
+          {% endif %}
+
+          {% if section.settings.promo_title %}
+            <h2 class="promo-banner__title">
+              {{ section.settings.promo_title }}
+            </h2>
+          {% endif %}
+
+          {% if section.settings.promo_description %}
+            <p class="promo-banner__description">
+              {{ section.settings.promo_description }}
+            </p>
+          {% endif %}
+
+          {% if section.settings.discount_text %}
+            <div class="promo-banner__discount">
+              {{ section.settings.discount_text }}
+            </div>
+          {% endif %}
+
+          {% if section.settings.promo_cta_label and section.settings.promo_cta_link %}
+            <a 
+              href="{{ section.settings.promo_cta_link }}" 
+              class="button button--primary button--lg promo-banner__cta"
+              aria-label="{{ section.settings.promo_cta_label }}"
+            >
+              {{ section.settings.promo_cta_label }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .promo-banner {
+    padding: var(--space-xxl) 0;
+    background-color: var(--color-background);
+  }
+
+  .promo-banner__wrapper {
+    position: relative;
+    display: flex;
+    gap: var(--space-xl);
+    align-items: center;
+    background-color: var(--color-background-secondary);
+    border-radius: var(--radius-soft);
+    overflow: hidden;
+  }
+
+  .promo-banner__image-container {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .promo-banner__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .promo-banner__image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-bottom: 25%;
+    background-color: var(--color-background-secondary);
+    color: var(--color-text-secondary);
+  }
+
+  .promo-banner__image-placeholder svg {
+    width: 80%;
+    height: 80%;
+  }
+
+  .promo-banner__content {
+    flex: 1;
+    padding: var(--space-xxl) var(--space-lg);
+  }
+
+  .promo-banner__content--overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+
+  .promo-banner__inner {
+    max-width: 500px;
+  }
+
+  .promo-banner__badge {
+    display: inline-block;
+    background-color: var(--color-sale);
+    color: #FFFFFF;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-pill);
+    font-size: var(--font-size-body-xs);
+    font-weight: var(--fw-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-wide);
+    margin-bottom: var(--space-md);
+  }
+
+  .promo-banner__title {
+    font-size: var(--font-size-h2);
+    font-weight: var(--fw-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-md);
+    line-height: var(--line-height-h2);
+  }
+
+  .promo-banner__description {
+    font-size: var(--font-size-body-lg);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-lg);
+    line-height: var(--line-height-body);
+  }
+
+  .promo-banner__discount {
+    font-size: var(--font-size-h4);
+    font-weight: var(--fw-bold);
+    color: var(--color-sale);
+    margin-bottom: var(--space-lg);
+  }
+
+  .promo-banner__cta {
+    display: inline-block;
+    transition: all var(--transition-base) var(--transition-timing);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .promo-banner__cta:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .promo-banner {
+      padding: var(--space-xl) 0;
+    }
+
+    .promo-banner__wrapper {
+      gap: var(--space-lg);
+    }
+
+    .promo-banner__content {
+      padding: var(--space-xl) var(--space-lg);
+    }
+
+    .promo-banner__title {
+      font-size: var(--font-size-h3);
+    }
+
+    .promo-banner__description {
+      font-size: var(--font-size-body-md);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .promo-banner {
+      padding: var(--space-lg) 0;
+    }
+
+    .promo-banner__wrapper {
+      flex-direction: column;
+      gap: 0;
+      background-color: transparent;
+    }
+
+    .promo-banner__image-container {
+      width: 100%;
+      order: -1;
+    }
+
+    .promo-banner__content {
+      padding: var(--space-lg);
+      background-color: var(--color-background-secondary);
+    }
+
+    .promo-banner__content--overlay {
+      position: relative;
+      left: auto;
+      right: auto;
+      top: auto;
+      transform: none;
+      z-index: 1;
+    }
+
+    .promo-banner__title {
+      font-size: var(--font-size-h4);
+      margin-bottom: var(--space-sm);
+    }
+
+    .promo-banner__description {
+      font-size: var(--font-size-body-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .promo-banner__cta {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .promo-banner {
+      padding: var(--space-md) 0;
+    }
+
+    .promo-banner__content {
+      padding: var(--space-md);
+    }
+
+    .promo-banner__title {
+      font-size: var(--font-size-h5);
+    }
+
+    .promo-banner__description {
+      font-size: var(--font-size-body-sm);
+    }
+
+    .promo-banner__discount {
+      font-size: var(--font-size-h5);
+      margin-bottom: var(--space-md);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Promotional Banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Banner Content"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_image",
+      "label": "Use Background Image",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "promo_image",
+      "label": "Promotional Image"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "placeholder": "Limited Time",
+      "default": "Limited Time"
+    },
+    {
+      "type": "text",
+      "id": "promo_title",
+      "label": "Promotion Title",
+      "placeholder": "Special Offer",
+      "default": "Spring Sale"
+    },
+    {
+      "type": "textarea",
+      "id": "promo_description",
+      "label": "Promotion Description",
+      "placeholder": "Describe your promotion"
+    },
+    {
+      "type": "text",
+      "id": "discount_text",
+      "label": "Discount Text",
+      "placeholder": "Save 30%",
+      "default": "Save 30%"
+    },
+    {
+      "type": "text",
+      "id": "promo_cta_label",
+      "label": "CTA Button Label",
+      "placeholder": "Shop Now",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "promo_cta_link",
+      "label": "CTA Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promotional Banner"
+    }
+  ]
+}
+{% endschema %}
